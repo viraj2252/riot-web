@@ -20,7 +20,7 @@ limitations under the License.
 import React from 'react';
 import GeminiScrollbar from 'react-gemini-scrollbar';
 import request from 'browser-request';
-import { _t } from 'matrix-react-sdk/lib/languageHandler';
+import { _t } from 'matrix-react-sdk-vj/lib/languageHandler';
 import sanitizeHtml from 'sanitize-html';
 
 module.exports = React.createClass({
@@ -58,16 +58,14 @@ module.exports = React.createClass({
             this.setState({
                 iframeSrc: `${this.props.teamServerUrl}/static/${this.props.teamToken}/home.html`
             });
-        }
-        else {
+        } else {
             // we use request() to inline the homepage into the react component
             // so that it can inherit CSS and theming easily rather than mess around
             // with iframes and trying to synchronise document.stylesheets.
 
             let src = this.props.homePageUrl || 'home.html';
 
-            request(
-                { method: "GET", url: src },
+            request({ method: "GET", url: src },
                 (err, response, body) => {
                     if (this._unmounted) {
                         return;
@@ -79,7 +77,7 @@ module.exports = React.createClass({
                         return;
                     }
 
-                    body = body.replace(/_t\(['"]([\s\S]*?)['"]\)/mg, (match, g1)=>this.translate(g1));
+                    body = body.replace(/_t\(['"]([\s\S]*?)['"]\)/mg, (match, g1) => this.translate(g1));
                     this.setState({ page: body });
                 }
             );
@@ -92,18 +90,24 @@ module.exports = React.createClass({
 
     render: function() {
         if (this.state.iframeSrc) {
-            return (
-                <div className="mx_HomePage">
-                    <iframe src={ this.state.iframeSrc } />
-                </div>
+            return ( <
+                div className = "mx_HomePage" >
+                <
+                iframe src = { this.state.iframeSrc }
+                /> <
+                /div>
             );
-        }
-        else {
-            return (
-                <GeminiScrollbar autoshow={true} className="mx_HomePage">
-                    <div className="mx_HomePage_body" dangerouslySetInnerHTML={{ __html: this.state.page }}>
-                    </div>
-                </GeminiScrollbar>
+        } else {
+            return ( <
+                GeminiScrollbar autoshow = { true }
+                className = "mx_HomePage" >
+                <
+                div className = "mx_HomePage_body"
+                dangerouslySetInnerHTML = {
+                    { __html: this.state.page } } >
+                <
+                /div> <
+                /GeminiScrollbar>
             );
         }
     }

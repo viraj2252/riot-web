@@ -17,9 +17,9 @@ limitations under the License.
 'use strict';
 
 import React from 'react';
-import { _t } from 'matrix-react-sdk/lib/languageHandler';
-import Notifier from 'matrix-react-sdk/lib/Notifier';
-import AccessibleButton from 'matrix-react-sdk/lib/components/views/elements/AccessibleButton';
+import { _t } from 'matrix-react-sdk-vj/lib/languageHandler';
+import Notifier from 'matrix-react-sdk-vj/lib/Notifier';
+import AccessibleButton from 'matrix-react-sdk-vj/lib/components/views/elements/AccessibleButton';
 
 module.exports = React.createClass({
     displayName: 'MatrixToolbar',
@@ -33,14 +33,23 @@ module.exports = React.createClass({
     },
 
     render: function() {
-        return (
-            <div className="mx_MatrixToolbar">
-                <img className="mx_MatrixToolbar_warning" src="img/warning.svg" width="24" height="23" alt="Warning"/>
-                <div className="mx_MatrixToolbar_content">
-                   { _t('You are not receiving desktop notifications') } <a className="mx_MatrixToolbar_link" onClick={ this.onClick }> { _t('Enable them now') }</a>
-                </div>
-                <AccessibleButton className="mx_MatrixToolbar_close" onClick={ this.hideToolbar } ><img src="img/cancel.svg" width="18" height="18" /></AccessibleButton>
-            </div>
+        return ( <
+            div className = "mx_MatrixToolbar" >
+            <
+            img className = "mx_MatrixToolbar_warning"
+            src = "img/warning.svg"
+            width = "24"
+            height = "23"
+            alt = "Warning" / >
+            <
+            div className = "mx_MatrixToolbar_content" > { _t('You are not receiving desktop notifications') } < a className = "mx_MatrixToolbar_link"
+            onClick = { this.onClick } > { _t('Enable them now') } < /a> <
+            /div> <
+            AccessibleButton className = "mx_MatrixToolbar_close"
+            onClick = { this.hideToolbar } > < img src = "img/cancel.svg"
+            width = "18"
+            height = "18" / > < /AccessibleButton> <
+            /div>
         );
     },
 });

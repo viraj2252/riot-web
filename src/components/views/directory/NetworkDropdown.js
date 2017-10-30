@@ -15,8 +15,8 @@ limitations under the License.
 */
 
 import React from 'react';
-import MatrixClientPeg from 'matrix-react-sdk/lib/MatrixClientPeg';
-import {instanceForInstanceId} from '../../../utils/DirectoryUtils';
+import MatrixClientPeg from 'matrix-react-sdk-vj/lib/MatrixClientPeg';
+import { instanceForInstanceId } from '../../../utils/DirectoryUtils';
 
 const DEFAULT_ICON_URL = "img/network-matrix.svg";
 
@@ -177,24 +177,26 @@ export default class NetworkDropdown extends React.Component {
         } else if (!instance) {
             key = server + '_all';
             name = 'Matrix';
-            icon = <img src="img/network-matrix.svg" />;
+            icon = < img src = "img/network-matrix.svg" / > ;
             span_class = 'mx_NetworkDropdown_menu_network';
         } else {
             key = server + '_inst_' + instance.instance_id;
             const imgUrl = instance.icon ?
                 MatrixClientPeg.get().mxcUrlToHttp(instance.icon, 25, 25, 'crop', true) :
                 DEFAULT_ICON_URL;
-            icon = <img src={imgUrl} />;
+            icon = < img src = { imgUrl }
+            />;
             name = instance.desc;
             span_class = 'mx_NetworkDropdown_menu_network';
         }
 
         const click_handler = handleClicks ? this.onMenuOptionClick.bind(this, server, instance, includeAll) : null;
 
-        return <div key={key} className="mx_NetworkDropdown_networkoption" onClick={click_handler}>
-            {icon}
-            <span className="mx_NetworkDropdown_menu_network">{name}</span>
-        </div>
+        return <div key = { key }
+        className = "mx_NetworkDropdown_networkoption"
+        onClick = { click_handler } > { icon } <
+            span className = "mx_NetworkDropdown_menu_network" > { name } < /span> <
+            /div>
     }
 
     render() {
@@ -203,13 +205,15 @@ export default class NetworkDropdown extends React.Component {
         let menu;
         if (this.state.expanded) {
             const menu_options = this._getMenuOptions();
-            menu = <div className="mx_NetworkDropdown_menu">
-                {menu_options}
-            </div>;
-            current_value = <input type="text" className="mx_NetworkDropdown_networkoption"
-                ref={this.collectInputTextBox} onKeyUp={this.onInputKeyUp}
-                placeholder="matrix.org" // 'matrix.org' as an example of an HS name
-            />
+            menu = < div className = "mx_NetworkDropdown_menu" > { menu_options } <
+                /div>;
+            current_value = < input type = "text"
+            className = "mx_NetworkDropdown_networkoption"
+            ref = { this.collectInputTextBox }
+            onKeyUp = { this.onInputKeyUp }
+            placeholder = "matrix.org" // 'matrix.org' as an example of an HS name
+                /
+                >
         } else {
             const instance = instanceForInstanceId(this.props.protocols, this.state.selectedInstanceId);
             current_value = this._makeMenuOption(
@@ -217,13 +221,14 @@ export default class NetworkDropdown extends React.Component {
             );
         }
 
-        return <div className="mx_NetworkDropdown" ref={this.collectRoot}>
-            <div className="mx_NetworkDropdown_input" onClick={this.onInputClick}>
-                {current_value}
-                <span className="mx_NetworkDropdown_arrow"></span>
-                {menu}
-            </div>
-        </div>;
+        return <div className = "mx_NetworkDropdown"
+        ref = { this.collectRoot } >
+            <
+            div className = "mx_NetworkDropdown_input"
+        onClick = { this.onInputClick } > { current_value } <
+            span className = "mx_NetworkDropdown_arrow" > < /span> { menu } <
+            /div> <
+            /div>;
     }
 }
 

@@ -15,11 +15,11 @@ limitations under the License.
 */
 
 import React from 'react';
-import { _t } from 'matrix-react-sdk/lib/languageHandler';
-import DateUtils from 'matrix-react-sdk/lib/DateUtils';
+import { _t } from 'matrix-react-sdk-vj/lib/languageHandler';
+import DateUtils from 'matrix-react-sdk-vj/lib/DateUtils';
 
 function getdaysArray() {
-	return [
+    return [
         _t('Sunday'),
         _t('Monday'),
         _t('Tuesday'),
@@ -41,19 +41,16 @@ module.exports = React.createClass({
         var label;
         if (date.toDateString() === today.toDateString()) {
             label = _t('Today');
-        }
-        else if (date.toDateString() === yesterday.toDateString()) {
+        } else if (date.toDateString() === yesterday.toDateString()) {
             label = _t('Yesterday');
-        }
-        else if (today.getTime() - date.getTime() < 6 * 24 * 60 * 60 * 1000) {
+        } else if (today.getTime() - date.getTime() < 6 * 24 * 60 * 60 * 1000) {
             label = days[date.getDay()];
-        }
-        else {
+        } else {
             label = DateUtils.formatFullDate(date, this.props.showTwelveHour);
         }
 
-        return (
-            <h2 className="mx_DateSeparator">{ label }</h2>
+        return ( <
+            h2 className = "mx_DateSeparator" > { label } < /h2>
         );
     }
 });

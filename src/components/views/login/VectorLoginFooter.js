@@ -17,7 +17,7 @@ limitations under the License.
 'use strict';
 
 var React = require('react');
-import { _t } from 'matrix-react-sdk/lib/languageHandler';
+import { _t } from 'matrix-react-sdk-vj/lib/languageHandler';
 
 module.exports = React.createClass({
     displayName: 'VectorLoginFooter',
@@ -26,12 +26,11 @@ module.exports = React.createClass({
     },
 
     render: function() {
-        return (
-            <div className="mx_Login_links">
-                <a href="https://medium.com/@RiotChat">blog</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;
-                <a href="https://twitter.com/@RiotChat">twitter</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;
-                <a href="https://github.com/vector-im/riot-web">github</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;
-                <a href="https://matrix.org">{ _t('powered by Matrix') }</a>
+        return ( <div className = "mx_Login_links">
+            <a href = "http://blog.tenx.tech"> blog </a>&nbsp;&nbsp;&middot;&nbsp;&nbsp; 
+            <a href = "https://twitter.com/tenxwallet"> twitter </a>&nbsp;&nbsp;&middot;&nbsp;&nbsp; 
+            <a href = "https://www.facebook.com/tenxwallet" > facebook </a>&nbsp;&nbsp;&middot;&nbsp;&nbsp; 
+            <a href = "https://matrix.org" > { _t('powered by Matrix') } </a> 
             </div>
         );
     }

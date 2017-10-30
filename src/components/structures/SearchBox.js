@@ -17,12 +17,12 @@ limitations under the License.
 'use strict';
 
 import React from 'react';
-import { _t } from 'matrix-react-sdk/lib/languageHandler';
-import KeyCode from 'matrix-react-sdk/lib/KeyCode';
-import sdk from 'matrix-react-sdk';
-import dis from 'matrix-react-sdk/lib/dispatcher';
-import rate_limited_func from 'matrix-react-sdk/lib/ratelimitedfunc';
-import AccessibleButton from 'matrix-react-sdk/lib/components/views/elements/AccessibleButton';
+import { _t } from 'matrix-react-sdk-vj/lib/languageHandler';
+import KeyCode from 'matrix-react-sdk-vj/lib/KeyCode';
+import sdk from 'matrix-react-sdk-vj';
+import dis from 'matrix-react-sdk-vj/lib/dispatcher';
+import rate_limited_func from 'matrix-react-sdk-vj/lib/ratelimitedfunc';
+import AccessibleButton from 'matrix-react-sdk-vj/lib/components/views/elements/AccessibleButton';
 
 module.exports = React.createClass({
     displayName: 'SearchBox',
@@ -80,8 +80,7 @@ module.exports = React.createClass({
             dis.dispatch({
                 action: 'show_left_panel',
             });
-        }
-        else {
+        } else {
             dis.dispatch({
                 action: 'hide_left_panel',
             });
@@ -92,7 +91,7 @@ module.exports = React.createClass({
         switch (ev.keyCode) {
             case KeyCode.ESCAPE:
                 this._clearSearch();
-                dis.dispatch({action: 'focus_composer'});
+                dis.dispatch({ action: 'focus_composer' });
                 break;
         }
     },
@@ -109,55 +108,75 @@ module.exports = React.createClass({
 
         var toggleCollapse;
         if (this.props.collapsed) {
-            toggleCollapse =
-                <AccessibleButton className="mx_SearchBox_maximise" tabIndex={collapseTabIndex} onClick={ this.onToggleCollapse.bind(this, true) }>
-                    <TintableSvg src="img/maximise.svg" width="10" height="16" alt={ _t("Expand panel") }/>
-                </AccessibleButton>
-        }
-        else {
-            toggleCollapse =
-                <AccessibleButton className="mx_SearchBox_minimise" tabIndex={collapseTabIndex} onClick={ this.onToggleCollapse.bind(this, false) }>
-                    <TintableSvg src="img/minimise.svg" width="10" height="16" alt={ _t("Collapse panel") }/>
-                </AccessibleButton>
+            toggleCollapse = <
+                AccessibleButton className = "mx_SearchBox_maximise"
+            tabIndex = { collapseTabIndex }
+            onClick = { this.onToggleCollapse.bind(this, true) } >
+                <
+                TintableSvg src = "img/maximise.svg"
+            width = "10"
+            height = "16"
+            alt = { _t("Expand panel") }
+            /> < /
+            AccessibleButton >
+        } else {
+            toggleCollapse = <
+                AccessibleButton className = "mx_SearchBox_minimise"
+            tabIndex = { collapseTabIndex }
+            onClick = { this.onToggleCollapse.bind(this, false) } >
+                <
+                TintableSvg src = "img/minimise.svg"
+            width = "10"
+            height = "16"
+            alt = { _t("Collapse panel") }
+            /> < /
+            AccessibleButton >
         }
 
         var searchControls;
         if (!this.props.collapsed) {
             searchControls = [
-                    this.state.searchTerm.length > 0 ?
-                    <AccessibleButton key="button"
-                            className="mx_SearchBox_closeButton"
-                            onClick={ ()=>{ this._clearSearch(); } }>
-                        <TintableSvg
-                            className="mx_SearchBox_searchButton"
-                            src="img/icons-close.svg" width="24" height="24"
-                        />
-                    </AccessibleButton>
-                    :
-                    <TintableSvg
-                        key="button"
-                        className="mx_SearchBox_searchButton"
-                        src="img/icons-search-copy.svg" width="13" height="13"
-                    />,
-                    <input
-                        key="searchfield"
-                        type="text"
-                        ref="search"
-                        className="mx_SearchBox_search"
-                        value={ this.state.searchTerm }
-                        onChange={ this.onChange }
-                        onKeyDown={ this._onKeyDown }
-                        placeholder={ _t('Filter room names') }
-                    />
-                ];
+                this.state.searchTerm.length > 0 ?
+                <
+                AccessibleButton key = "button"
+                className = "mx_SearchBox_closeButton"
+                onClick = {
+                    () => { this._clearSearch(); }
+                } >
+                <
+                TintableSvg
+                className = "mx_SearchBox_searchButton"
+                src = "img/icons-close.svg"
+                width = "24"
+                height = "24" /
+                >
+                <
+                /AccessibleButton> : <
+                TintableSvg
+                key = "button"
+                className = "mx_SearchBox_searchButton"
+                src = "img/icons-search-copy.svg"
+                width = "13"
+                height = "13" /
+                >
+                , <
+                input
+                key = "searchfield"
+                type = "text"
+                ref = "search"
+                className = "mx_SearchBox_search"
+                value = { this.state.searchTerm }
+                onChange = { this.onChange }
+                onKeyDown = { this._onKeyDown }
+                placeholder = { _t('Filter room names') }
+                />
+            ];
         }
 
         var self = this;
-        return (
-            <div className="mx_SearchBox">
-                { searchControls }
-                { toggleCollapse }
-            </div>
+        return ( <
+            div className = "mx_SearchBox" > { searchControls } { toggleCollapse } <
+            /div>
         );
     }
 });

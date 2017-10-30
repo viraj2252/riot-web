@@ -19,12 +19,12 @@ limitations under the License.
 import React from 'react';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-import KeyCode from 'matrix-react-sdk/lib/KeyCode';
-import sdk from 'matrix-react-sdk';
-import dis from 'matrix-react-sdk/lib/dispatcher';
-import MatrixClientPeg from 'matrix-react-sdk/lib/MatrixClientPeg';
-import CallHandler from 'matrix-react-sdk/lib/CallHandler';
-import AccessibleButton from 'matrix-react-sdk/lib/components/views/elements/AccessibleButton';
+import KeyCode from 'matrix-react-sdk-vj/lib/KeyCode';
+import sdk from 'matrix-react-sdk-vj';
+import dis from 'matrix-react-sdk-vj/lib/dispatcher';
+import MatrixClientPeg from 'matrix-react-sdk-vj/lib/MatrixClientPeg';
+import CallHandler from 'matrix-react-sdk-vj/lib/CallHandler';
+import AccessibleButton from 'matrix-react-sdk-vj/lib/components/views/elements/AccessibleButton';
 import VectorConferenceHandler from '../../VectorConferenceHandler';
 
 var LeftPanel = React.createClass({
@@ -113,21 +113,17 @@ var LeftPanel = React.createClass({
             if (descending) {
                 if (child) {
                     element = child;
-                }
-                else if (sibling) {
+                } else if (sibling) {
                     element = sibling;
-                }
-                else {
+                } else {
                     descending = false;
                     element = element.parentElement;
                 }
-            }
-            else {
+            } else {
                 if (sibling) {
                     element = sibling;
                     descending = true;
-                }
-                else {
+                } else {
                     element = element.parentElement;
                 }
             }
@@ -140,10 +136,10 @@ var LeftPanel = React.createClass({
                 }
             }
 
-        } while(element && !(
-            classes.contains("mx_RoomTile") ||
-            classes.contains("mx_SearchBox_search") ||
-            classes.contains("mx_RoomSubList_ellipsis")));
+        } while (element && !(
+                classes.contains("mx_RoomTile") ||
+                classes.contains("mx_SearchBox_search") ||
+                classes.contains("mx_RoomSubList_ellipsis")));
 
         if (element) {
             element.focus();
@@ -170,10 +166,13 @@ var LeftPanel = React.createClass({
         let topBox;
         if (MatrixClientPeg.get().isGuest()) {
             const LoginBox = sdk.getComponent('structures.LoginBox');
-            topBox = <LoginBox collapsed={ this.props.collapsed }/>;
+            topBox = < LoginBox collapsed = { this.props.collapsed }
+            />;
         } else {
             const SearchBox = sdk.getComponent('structures.SearchBox');
-            topBox = <SearchBox collapsed={ this.props.collapsed } onSearch={ this.onSearch } />;
+            topBox = < SearchBox collapsed = { this.props.collapsed }
+            onSearch = { this.onSearch }
+            />;
         }
 
         let classes = "mx_LeftPanel mx_fadable";
@@ -181,17 +180,22 @@ var LeftPanel = React.createClass({
             classes += " collapsed";
         }
 
-        return (
-            <aside className={classes} style={{ opacity: this.props.opacity }}
-                   onKeyDown={ this._onKeyDown } onFocus={ this._onFocus } onBlur={ this._onBlur }>
-                { topBox }
-                <CallPreview ConferenceHandler={VectorConferenceHandler} />
-                <RoomList
-                    collapsed={this.props.collapsed}
-                    searchFilter={this.state.searchFilter}
-                    ConferenceHandler={VectorConferenceHandler} />
-                <BottomLeftMenu collapsed={this.props.collapsed}/>
-            </aside>
+        return ( <
+            aside className = { classes }
+            style = {
+                { opacity: this.props.opacity } }
+            onKeyDown = { this._onKeyDown }
+            onFocus = { this._onFocus }
+            onBlur = { this._onBlur } > { topBox } <
+            CallPreview ConferenceHandler = { VectorConferenceHandler }
+            /> <
+            RoomList collapsed = { this.props.collapsed }
+            searchFilter = { this.state.searchFilter }
+            ConferenceHandler = { VectorConferenceHandler }
+            /> <
+            BottomLeftMenu collapsed = { this.props.collapsed }
+            /> <
+            /aside>
         );
     }
 });

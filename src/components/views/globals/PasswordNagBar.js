@@ -17,48 +17,52 @@ limitations under the License.
 'use strict';
 
 import React from 'react';
-import sdk from 'matrix-react-sdk';
-import Modal from 'matrix-react-sdk/lib/Modal';
-import dis from 'matrix-react-sdk/lib/dispatcher';
-import { _t, _tJsx } from 'matrix-react-sdk/lib/languageHandler';
+import sdk from 'matrix-react-sdk-vj';
+import Modal from 'matrix-react-sdk-vj/lib/Modal';
+import dis from 'matrix-react-sdk-vj/lib/dispatcher';
+import { _t, _tJsx } from 'matrix-react-sdk-vj/lib/languageHandler';
 
 export default React.createClass({
-    onUpdateClicked: function() {
-        const SetPasswordDialog = sdk.getComponent('dialogs.SetPasswordDialog');
-        Modal.createTrackedDialog('Set Password Dialog', 'Password Nag Bar', SetPasswordDialog, {
-            onFinished: (passwordChanged) => {
-                if (!passwordChanged) {
-                    return;
-                }
-                // Notify SessionStore that the user's password was changed
-                dis.dispatch({
-                    action: 'password_changed',
+            onUpdateClicked: function() {
+                const SetPasswordDialog = sdk.getComponent('dialogs.SetPasswordDialog');
+                Modal.createTrackedDialog('Set Password Dialog', 'Password Nag Bar', SetPasswordDialog, {
+                    onFinished: (passwordChanged) => {
+                        if (!passwordChanged) {
+                            return;
+                        }
+                        // Notify SessionStore that the user's password was changed
+                        dis.dispatch({
+                            action: 'password_changed',
+                        });
+                    },
                 });
             },
-        });
-    },
 
-    render: function() {
-        const toolbarClasses = "mx_MatrixToolbar mx_MatrixToolbar_clickable";
-        return (
-            <div className={toolbarClasses} onClick={this.onUpdateClicked}>
-                <img className="mx_MatrixToolbar_warning"
-                    src="img/warning.svg"
-                    width="24"
-                    height="23"
-                    alt="Warning"
-                />
-                <div className="mx_MatrixToolbar_content">
-                    { _tJsx(
-                        "To return to your account in future you need to <u>set a password</u>",
-                        /<u>(.*?)<\/u>/,
-                        (sub) => { return <u>{ sub }</u>; },
-                    ) }
-                </div>
-                <button className="mx_MatrixToolbar_action">
-                    { _t("Set Password") }
-                </button>
-            </div>
-        );
-    },
-});
+            render: function() {
+                const toolbarClasses = "mx_MatrixToolbar mx_MatrixToolbar_clickable";
+                return ( <
+                    div className = { toolbarClasses }
+                    onClick = { this.onUpdateClicked } >
+                    <
+                    img className = "mx_MatrixToolbar_warning"
+                    src = "img/warning.svg"
+                    width = "24"
+                    height = "23"
+                    alt = "Warning" /
+                    >
+                    <
+                    div className = "mx_MatrixToolbar_content" > {
+                        _tJsx(
+                            "To return to your account in future you need to <u>set a password</u>",
+                            /<u>(.*?)<\/u>/,
+                            (sub) => {
+                                return <u > { sub } < /u>; },
+                            )
+                        } <
+                        /div> <
+                        button className = "mx_MatrixToolbar_action" > { _t("Set Password") } <
+                        /button> <
+                        /div>
+                    );
+                },
+            });

@@ -17,10 +17,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import VectorBasePlatform, {updateCheckStatusEnum} from './VectorBasePlatform';
+import VectorBasePlatform, { updateCheckStatusEnum } from './VectorBasePlatform';
 import request from 'browser-request';
-import dis from 'matrix-react-sdk/lib/dispatcher.js';
-import { _t } from 'matrix-react-sdk/lib/languageHandler';
+import dis from 'matrix-react-sdk-vj/lib/dispatcher.js';
+import { _t } from 'matrix-react-sdk-vj/lib/languageHandler';
 import Promise from 'bluebird';
 
 import url from 'url';
@@ -64,7 +64,7 @@ export default class WebPlatform extends VectorBasePlatform {
      * that is 'granted' if the user allowed the request or
      * 'denied' otherwise.
      */
-    requestNotificationPermission(): Promise<string> {
+    requestNotificationPermission(): Promise < string > {
         // annoyingly, the latest spec says this returns a
         // promise, but this is only supported in Chrome 46
         // and Firefox 47, so adapt the callback API.
@@ -77,8 +77,7 @@ export default class WebPlatform extends VectorBasePlatform {
 
     displayNotification(title: string, msg: string, avatarUrl: string, room: Object) {
         const notification = new global.Notification(
-            title,
-            {
+            title, {
                 body: msg,
                 icon: avatarUrl,
                 tag: "vector",
@@ -102,7 +101,7 @@ export default class WebPlatform extends VectorBasePlatform {
         }, 5 * 1000);
     }
 
-    _getVersion(): Promise<string> {
+    _getVersion(): Promise < string > {
         const deferred = Promise.defer();
 
         // We add a cachebuster to the request to make sure that we know about
@@ -110,8 +109,7 @@ export default class WebPlatform extends VectorBasePlatform {
         // actually be the version we'd get on a reload (particularly in the
         // presence of intermediate caching proxies), but still: we're trying
         // to tell the user that there is a new version.
-        request(
-            {
+        request({
                 method: "GET",
                 url: "version",
                 qs: { cachebuster: Date.now() },
@@ -130,7 +128,7 @@ export default class WebPlatform extends VectorBasePlatform {
         return deferred.promise;
     }
 
-    getAppVersion(): Promise<string> {
+    getAppVersion(): Promise < string > {
         if (this.runningVersion !== null) {
             return Promise.resolve(this.runningVersion);
         }
@@ -192,10 +190,10 @@ export default class WebPlatform extends VectorBasePlatform {
         const ua = new UAParser();
         const browserName = ua.getBrowser().name || "unknown browser";
         const osName = ua.getOS().name || "unknown os";
-        return _t('%(appName)s via %(browserName)s on %(osName)s', {appName: appName, browserName: browserName, osName: osName});
+        return _t('%(appName)s via %(browserName)s on %(osName)s', { appName: appName, browserName: browserName, osName: osName });
     }
 
-    screenCaptureErrorString(): ?string {
+    screenCaptureErrorString(): ? string {
         // it won't work at all if you're not on HTTPS so whine whine whine
         if (!global.window || global.window.location.protocol !== "https:") {
             return _t("You need to be using HTTPS to place a screen-sharing call.");

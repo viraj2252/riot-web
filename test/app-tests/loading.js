@@ -27,20 +27,20 @@ import MatrixReactTestUtils from 'matrix-react-test-utils';
 
 import jssdk from 'matrix-js-sdk';
 
-import sdk from 'matrix-react-sdk';
-import MatrixClientPeg from 'matrix-react-sdk/lib/MatrixClientPeg';
-import * as languageHandler from 'matrix-react-sdk/lib/languageHandler';
-import {VIEWS} from 'matrix-react-sdk/lib/components/structures/MatrixChat';
-import dis from 'matrix-react-sdk/lib/dispatcher';
+import sdk from 'matrix-react-sdk-vj';
+import MatrixClientPeg from 'matrix-react-sdk-vj/lib/MatrixClientPeg';
+import * as languageHandler from 'matrix-react-sdk-vj/lib/languageHandler';
+import { VIEWS } from 'matrix-react-sdk-vj/lib/components/structures/MatrixChat';
+import dis from 'matrix-react-sdk-vj/lib/dispatcher';
 
 import * as test_utils from '../test-utils';
 import MockHttpBackend from 'matrix-mock-request';
-import {parseQs, parseQsFromFragment} from '../../src/vector/url_utils';
+import { parseQs, parseQsFromFragment } from '../../src/vector/url_utils';
 
-var DEFAULT_HS_URL='http://my_server';
-var DEFAULT_IS_URL='http://my_is';
+var DEFAULT_HS_URL = 'http://my_server';
+var DEFAULT_IS_URL = 'http://my_is';
 
-describe('loading:', function () {
+describe('loading:', function() {
     let parentDiv;
     let httpBackend;
 
@@ -71,7 +71,7 @@ describe('loading:', function () {
         });
     });
 
-    afterEach(async function () {
+    afterEach(async function() {
         console.log(`${Date.now()}: loading: afterEach`);
         if (parentDiv) {
             ReactDOM.unmountComponentAtNode(parentDiv);
@@ -113,10 +113,10 @@ describe('loading:', function () {
         tokenLoginCompletePromise = tokenLoginCompleteDefer.promise;
 
         function onNewScreen(screen) {
-            console.log(Date.now() + " newscreen "+screen);
+            console.log(Date.now() + " newscreen " + screen);
             var hash = '#/' + screen;
             windowLocation.hash = hash;
-            console.log(Date.now() + " browser URI now "+ windowLocation);
+            console.log(Date.now() + " browser URI now " + windowLocation);
         }
 
         // Parse the given window.location and return parameters that can be used when calling
@@ -138,16 +138,19 @@ describe('loading:', function () {
         }, opts.config || {});
 
         var params = parseQs(windowLocation);
-        matrixChat = ReactDOM.render(
-            <MatrixChat
-                onNewScreen={onNewScreen}
-                config={config}
-                realQueryParams={params}
-                startingFragmentQueryParams={fragParts.params}
-                enableGuest={true}
-                onTokenLoginCompleted={() => tokenLoginCompleteDefer.resolve()}
-                initialScreenAfterLogin={getScreenFromLocation(windowLocation)}
-                makeRegistrationUrl={() => {throw new Error('Not implemented');}}
+        matrixChat = ReactDOM.render( <
+            MatrixChat onNewScreen = { onNewScreen }
+            config = { config }
+            realQueryParams = { params }
+            startingFragmentQueryParams = { fragParts.params }
+            enableGuest = { true }
+            onTokenLoginCompleted = {
+                () => tokenLoginCompleteDefer.resolve()
+            }
+            initialScreenAfterLogin = { getScreenFromLocation(windowLocation) }
+            makeRegistrationUrl = {
+                () => { throw new Error('Not implemented'); }
+            }
             />, parentDiv
         );
     }
@@ -160,7 +163,7 @@ describe('loading:', function () {
         response = response || {};
         let syncRequest = null;
         httpBackend.when('GET', '/sync')
-            .check((r) => {syncRequest = r;})
+            .check((r) => { syncRequest = r; })
             .respond(200, response);
 
         for (let attempts = 10; attempts > 0; attempts--) {
@@ -174,7 +177,7 @@ describe('loading:', function () {
     }
 
     describe("Clean load with no stored credentials:", function() {
-        it('gives a login panel by default', function (done) {
+        it('gives a login panel by default', function(done) {
             loadApp();
 
             Promise.delay(1).then(() => {
@@ -263,8 +266,8 @@ describe('loading:', function () {
 
     describe("MatrixClient rehydrated from stored credentials:", function() {
         beforeEach(function() {
-            localStorage.setItem("mx_hs_url", "http://localhost" );
-            localStorage.setItem("mx_is_url", "http://localhost" );
+            localStorage.setItem("mx_hs_url", "http://localhost");
+            localStorage.setItem("mx_is_url", "http://localhost");
             localStorage.setItem("mx_access_token", "access_token");
             localStorage.setItem("mx_user_id", "@me:localhost");
             localStorage.setItem("mx_last_room_id", "!last_room:id");
@@ -403,7 +406,7 @@ describe('loading:', function () {
     });
 
     describe('Guest auto-registration:', function() {
-        it('shows a home page by default', function (done) {
+        it('shows a home page by default', function(done) {
             loadApp();
 
             Promise.delay(1).then(() => {
@@ -433,9 +436,9 @@ describe('loading:', function () {
             }).done(done, done);
         });
 
-        it('uses the last known homeserver to register with', function (done) {
-            localStorage.setItem("mx_hs_url", "https://homeserver" );
-            localStorage.setItem("mx_is_url", "https://idserver" );
+        it('uses the last known homeserver to register with', function(done) {
+            localStorage.setItem("mx_hs_url", "https://homeserver");
+            localStorage.setItem("mx_is_url", "https://idserver");
 
             loadApp();
 
@@ -572,7 +575,7 @@ describe('loading:', function () {
     });
 
     describe('Token login:', function() {
-        it('logs in successfully', function (done) {
+        it('logs in successfully', function(done) {
             loadApp({
                 queryString: "?loginToken=secretToken&homeserver=https%3A%2F%2Fhomeserver&identityServer=https%3A%2F%2Fidserver",
             });
@@ -668,11 +671,11 @@ function awaitSyncingSpinner(matrixChat, retryLimit, retryCount) {
     }
 
     if (matrixChat.state.view === VIEWS.LOADING ||
-            matrixChat.state.view === VIEWS.LOGGING_IN) {
+        matrixChat.state.view === VIEWS.LOGGING_IN) {
         console.log(Date.now() + " Awaiting sync spinner: still loading.");
         if (retryCount >= retryLimit) {
             throw new Error("MatrixChat still not loaded after " +
-                            retryCount + " tries");
+                retryCount + " tries");
         }
         // loading can take quite a long time, because we delete the
         // indexedDB store.
@@ -711,7 +714,7 @@ function awaitRoomView(matrixChat, retryLimit, retryCount) {
         console.log(Date.now() + " Awaiting room view: not ready yet.");
         if (retryCount >= retryLimit) {
             throw new Error("MatrixChat still not ready after " +
-                            retryCount + " tries");
+                retryCount + " tries");
         }
         return Promise.delay(0).then(() => {
             return awaitRoomView(matrixChat, retryLimit, retryCount + 1);

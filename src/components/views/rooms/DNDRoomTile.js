@@ -17,15 +17,15 @@ limitations under the License.
 'use strict';
 
 import React from 'react';
-import {DragSource} from 'react-dnd';
-import {DropTarget} from 'react-dnd';
+import { DragSource } from 'react-dnd';
+import { DropTarget } from 'react-dnd';
 
-import MatrixClientPeg from 'matrix-react-sdk/lib/MatrixClientPeg';
-import sdk from 'matrix-react-sdk';
-import { _t } from 'matrix-react-sdk/lib/languageHandler';
-import RoomTile from 'matrix-react-sdk/lib/components/views/rooms/RoomTile';
-import * as Rooms from 'matrix-react-sdk/lib/Rooms';
-import Modal from 'matrix-react-sdk/lib/Modal';
+import MatrixClientPeg from 'matrix-react-sdk-vj/lib/MatrixClientPeg';
+import sdk from 'matrix-react-sdk-vj';
+import { _t } from 'matrix-react-sdk-vj/lib/languageHandler';
+import RoomTile from 'matrix-react-sdk-vj/lib/components/views/rooms/RoomTile';
+import * as Rooms from 'matrix-react-sdk-vj/lib/Rooms';
+import Modal from 'matrix-react-sdk-vj/lib/Modal';
 
 /**
  * Defines a new Component, DNDRoomTile that wraps RoomTile, making it draggable.
@@ -43,7 +43,7 @@ var roomTileSource = {
         return props.roomSubList.props.editable;
     },
 
-    beginDrag: function (props) {
+    beginDrag: function(props) {
         // Return the data describing the dragged item
         var item = {
             room: props.room,
@@ -63,7 +63,7 @@ var roomTileSource = {
         return item;
     },
 
-    endDrag: function (props, monitor, component) {
+    endDrag: function(props, monitor, component) {
         var item = monitor.getItem();
 
         if (props.roomSubList.debug) console.log("roomTile endDrag for " + item.room.roomId + " with didDrop=" + monitor.didDrop());
@@ -115,13 +115,13 @@ var roomTileSource = {
                     var ErrorDialog = sdk.getComponent("dialogs.ErrorDialog");
                     console.error("Failed to remove tag " + prevTag + " from room: " + err);
                     Modal.createTrackedDialog('Failed to remove tag from room', '', ErrorDialog, {
-                        title: _t('Failed to remove tag %(tagName)s from room', {tagName: prevTag}),
+                        title: _t('Failed to remove tag %(tagName)s from room', { tagName: prevTag }),
                         description: ((err && err.message) ? err.message : _t('Operation failed')),
                     });
                 });
             }
 
-            var newOrder= {};
+            var newOrder = {};
             if (item.targetList.props.order === 'manual') {
                 newOrder['order'] = item.targetList.calcManualOrderTagData(item.room);
             }
@@ -134,13 +134,12 @@ var roomTileSource = {
                     var ErrorDialog = sdk.getComponent("dialogs.ErrorDialog");
                     console.error("Failed to add tag " + newTag + " to room: " + err);
                     Modal.createTrackedDialog('Failed to add tag to room', '', ErrorDialog, {
-                        title: _t('Failed to add tag %(tagName)s to room', {tagName: newTag}),
+                        title: _t('Failed to add tag %(tagName)s to room', { tagName: newTag }),
                         description: ((err && err.message) ? err.message : _t('Operation failed')),
                     });
                 });
             }
-        }
-        else {
+        } else {
             // cancel the drop and reset our original position
             if (props.roomSubList.debug) console.log("cancelling drop & drag");
             props.roomSubList.moveRoomTile(item.room, item.originalIndex);
@@ -185,29 +184,28 @@ var roomTileTarget = {
 
             // stop us from flickering between our droptarget and the previous room.
             // whenever the cursor changes direction we have to reset the flicker-damping.
-/*
-            var yDelta = off.y - item.lastYOffset;
+            /*
+                        var yDelta = off.y - item.lastYOffset;
 
-            if ((yDelta > 0 && item.lastYDelta < 0) ||
-                (yDelta < 0 && item.lastYDelta > 0))
-            {
-                // the cursor changed direction - forget our previous room
-                item.lastTargetRoom = null;
-            }
-            else {
-                // track the last room we were hovering over so we can stop
-                // bouncing back and forth if the droptarget is narrower than
-                // the other list items.  The other way to do this would be
-                // to reduce the size of the hittarget on the list items, but
-                // can't see an easy way to do that.
-                item.lastTargetRoom = props.room;
-            }
+                        if ((yDelta > 0 && item.lastYDelta < 0) ||
+                            (yDelta < 0 && item.lastYDelta > 0))
+                        {
+                            // the cursor changed direction - forget our previous room
+                            item.lastTargetRoom = null;
+                        }
+                        else {
+                            // track the last room we were hovering over so we can stop
+                            // bouncing back and forth if the droptarget is narrower than
+                            // the other list items.  The other way to do this would be
+                            // to reduce the size of the hittarget on the list items, but
+                            // can't see an easy way to do that.
+                            item.lastTargetRoom = props.room;
+                        }
 
-            if (yDelta) item.lastYDelta = yDelta;
-            item.lastYOffset = off.y;
-*/
-        }
-        else if (switchedTarget) {
+                        if (yDelta) item.lastYDelta = yDelta;
+                        item.lastYOffset = off.y;
+            */
+        } else if (switchedTarget) {
             if (!props.roomSubList.findRoomTile(item.room).room) {
                 // add to the list in the right place
                 props.roomSubList.moveRoomTile(item.room, 0);
@@ -221,20 +219,20 @@ var roomTileTarget = {
 // Export the wrapped version, inlining the 'collect' functions
 // to more closely resemble the ES7
 module.exports =
-DropTarget('RoomTile', roomTileTarget, function(connect, monitor) {
-    return {
-        // Call this function inside render()
-        // to let React DnD handle the drag events:
-        connectDropTarget: connect.dropTarget(),
-        isOver: monitor.isOver(),
-    }
-})(
-DragSource('RoomTile', roomTileSource, function(connect, monitor) {
-    return {
-        // Call this function inside render()
-        // to let React DnD handle the drag events:
-        connectDragSource: connect.dragSource(),
-        // You can ask the monitor about the current drag state:
-        isDragging: monitor.isDragging()
-    };
-})(RoomTile));
+    DropTarget('RoomTile', roomTileTarget, function(connect, monitor) {
+        return {
+            // Call this function inside render()
+            // to let React DnD handle the drag events:
+            connectDropTarget: connect.dropTarget(),
+            isOver: monitor.isOver(),
+        }
+    })(
+        DragSource('RoomTile', roomTileSource, function(connect, monitor) {
+            return {
+                // Call this function inside render()
+                // to let React DnD handle the drag events:
+                connectDragSource: connect.dragSource(),
+                // You can ask the monitor about the current drag state:
+                isDragging: monitor.isDragging()
+            };
+        })(RoomTile));

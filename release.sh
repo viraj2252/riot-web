@@ -9,7 +9,7 @@ set -e
 
 cd `dirname $0`
 
-for i in matrix-js-sdk matrix-react-sdk
+for i in matrix-js-sdk matrix-react-sdk-vj
 do
     depver=`cat package.json | jq -r .dependencies[\"$i\"]`
     latestver=`npm show $i version`

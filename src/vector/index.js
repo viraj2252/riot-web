@@ -52,8 +52,8 @@ window.addEventListener('beforeunload', (e) => {
 });
 
 
- // add React and ReactPerf to the global namespace, to make them easier to
- // access via the console
+// add React and ReactPerf to the global namespace, to make them easier to
+// access via the console
 global.React = require("react");
 if (process.env.NODE_ENV !== 'production') {
     global.Perf = require("react-addons-perf");
@@ -61,25 +61,25 @@ if (process.env.NODE_ENV !== 'production') {
 
 var RunModernizrTests = require("./modernizr"); // this side-effects a global
 var ReactDOM = require("react-dom");
-var sdk = require("matrix-react-sdk");
-const PlatformPeg = require("matrix-react-sdk/lib/PlatformPeg");
+var sdk = require("matrix-react-sdk-vj");
+const PlatformPeg = require("matrix-react-sdk-vj/lib/PlatformPeg");
 sdk.loadSkin(require('../component-index'));
 var VectorConferenceHandler = require('../VectorConferenceHandler');
 import Promise from 'bluebird';
 var request = require('browser-request');
-import * as UserSettingsStore from 'matrix-react-sdk/lib/UserSettingsStore';
-import * as languageHandler from 'matrix-react-sdk/lib/languageHandler';
+import * as UserSettingsStore from 'matrix-react-sdk-vj/lib/UserSettingsStore';
+import * as languageHandler from 'matrix-react-sdk-vj/lib/languageHandler';
 
 import url from 'url';
 
-import {parseQs, parseQsFromFragment} from './url_utils';
+import { parseQs, parseQsFromFragment } from './url_utils';
 import Platform from './platform';
 
-import MatrixClientPeg from 'matrix-react-sdk/lib/MatrixClientPeg';
+import MatrixClientPeg from 'matrix-react-sdk-vj/lib/MatrixClientPeg';
 
 var lastLocationHashSet = null;
 
-var CallHandler = require("matrix-react-sdk/lib/CallHandler");
+var CallHandler = require("matrix-react-sdk-vj/lib/CallHandler");
 CallHandler.setConferenceHandler(VectorConferenceHandler);
 
 MatrixClientPeg.setIndexedDbWorkerScript(window.vector_indexeddb_worker_script);
@@ -144,7 +144,7 @@ function onHashChange(ev) {
 // This will be called whenever the SDK changes screens,
 // so a web page can update the URL bar appropriately.
 var onNewScreen = function(screen) {
-    console.log("newscreen "+screen);
+    console.log("newscreen " + screen);
     var hash = '#/' + screen;
     lastLocationHashSet = hash;
     window.location.hash = hash;
@@ -190,8 +190,7 @@ window.addEventListener('hashchange', onHashChange);
 function getConfig(configJsonFilename) {
     let deferred = Promise.defer();
 
-    request(
-        { method: "GET", url: configJsonFilename },
+    request({ method: "GET", url: configJsonFilename },
         (err, response, body) => {
             if (err || response.status < 200 || response.status >= 300) {
                 // Lack of a config isn't an error, we should
@@ -206,7 +205,7 @@ function getConfig(configJsonFilename) {
                         deferred.resolve({});
                     }
                 }
-                deferred.reject({err: err, response: response});
+                deferred.reject({ err: err, response: response });
                 return;
             }
 
@@ -229,7 +228,7 @@ function onTokenLoginCompleted() {
     parsedUrl.search = "";
     var formatted = url.format(parsedUrl);
     console.log("Redirecting to " + formatted + " to drop loginToken " +
-                "from queryparams");
+        "from queryparams");
     window.location.href = formatted;
 }
 
@@ -252,8 +251,7 @@ async function loadApp() {
                 window.location = "https://itunes.apple.com/us/app/vector.im/id1083446067";
                 return;
             }
-        }
-        else if (/Android/.test(navigator.userAgent)) {
+        } else if (/Android/.test(navigator.userAgent)) {
             if (confirm(languageHandler._t("Riot is not supported on mobile web. Install the app?"))) {
                 window.location = "https://play.google.com/store/apps/details?id=im.vector.alpha";
                 return;
@@ -284,63 +282,67 @@ async function loadApp() {
         validBrowser = true;
     }
 
-    console.log("Vector starting at "+window.location);
+    console.log("Vector starting at " + window.location);
     if (configError) {
-        window.matrixChat = ReactDOM.render(<div className="error">
-            Unable to load config file: please refresh the page to try again.
-        </div>, document.getElementById('matrixchat'));
-    } else if (validBrowser) {
-        const platform = PlatformPeg.get();
-        platform.startUpdater();
+        window.matrixChat = ReactDOM.render( < div className = "error" >
+            Unable to load config file: please refresh the page to
+            try again. <
+            /div>, document.getElementById('matrixchat'));
+        }
+        else if (validBrowser) {
+            const platform = PlatformPeg.get();
+            platform.startUpdater();
 
-        const MatrixChat = sdk.getComponent('structures.MatrixChat');
-        window.matrixChat = ReactDOM.render(
-            <MatrixChat
-                onNewScreen={onNewScreen}
-                makeRegistrationUrl={makeRegistrationUrl}
-                ConferenceHandler={VectorConferenceHandler}
-                config={configJson}
-                realQueryParams={params}
-                startingFragmentQueryParams={fragparts.params}
-                enableGuest={true}
-                onTokenLoginCompleted={onTokenLoginCompleted}
-                initialScreenAfterLogin={getScreenFromLocation(window.location)}
-                defaultDeviceDisplayName={platform.getDefaultDeviceDisplayName()}
-            />,
-            document.getElementById('matrixchat')
-        );
-    } else {
-        console.error("Browser is missing required features.");
-        // take to a different landing page to AWOOOOOGA at the user
-        var CompatibilityPage = sdk.getComponent("structures.CompatibilityPage");
-        window.matrixChat = ReactDOM.render(
-            <CompatibilityPage onAccept={function() {
-                if (window.localStorage) window.localStorage.setItem('mx_accepts_unsupported_browser', true);
-                validBrowser = true;
-                console.log("User accepts the compatibility risks.");
-                loadApp();
-            }} />,
-            document.getElementById('matrixchat')
-        );
+            const MatrixChat = sdk.getComponent('structures.MatrixChat');
+            window.matrixChat = ReactDOM.render( <
+                MatrixChat onNewScreen = { onNewScreen }
+                makeRegistrationUrl = { makeRegistrationUrl }
+                ConferenceHandler = { VectorConferenceHandler }
+                config = { configJson }
+                realQueryParams = { params }
+                startingFragmentQueryParams = { fragparts.params }
+                enableGuest = { true }
+                onTokenLoginCompleted = { onTokenLoginCompleted }
+                initialScreenAfterLogin = { getScreenFromLocation(window.location) }
+                defaultDeviceDisplayName = { platform.getDefaultDeviceDisplayName() }
+                />,
+                document.getElementById('matrixchat')
+            );
+        } else {
+            console.error("Browser is missing required features.");
+            // take to a different landing page to AWOOOOOGA at the user
+            var CompatibilityPage = sdk.getComponent("structures.CompatibilityPage");
+            window.matrixChat = ReactDOM.render( <
+                CompatibilityPage onAccept = {
+                    function() {
+                        if (window.localStorage) window.localStorage.setItem('mx_accepts_unsupported_browser', true);
+                        validBrowser = true;
+                        console.log("User accepts the compatibility risks.");
+                        loadApp();
+                    }
+                }
+                />,
+                document.getElementById('matrixchat')
+            );
+        }
     }
-}
 
-async function loadLanguage() {
-    const prefLang = UserSettingsStore.getLocalSetting('language');
-    let langs = [];
+    async function loadLanguage() {
+        const prefLang = UserSettingsStore.getLocalSetting('language');
+        let langs = [];
 
-    if (!prefLang) {
-        languageHandler.getLanguagesFromBrowser().forEach((l) => {
-            langs.push(...languageHandler.getNormalizedLanguageKeys(l));
-        });
-    } else {
-        langs = [prefLang];
+        if (!prefLang) {
+            languageHandler.getLanguagesFromBrowser().forEach((l) => {
+                langs.push(...languageHandler.getNormalizedLanguageKeys(l));
+            });
+        } else {
+            langs = [prefLang];
+        }
+        try {
+            await languageHandler.setLanguage(langs);
+        } catch (e) {
+            console.error("Unable to set language", e);
+        }
     }
-    try {
-        await languageHandler.setLanguage(langs);
-    } catch (e) {
-        console.error("Unable to set language", e);
-    }
-}
 
-loadApp();
+    loadApp();

@@ -18,7 +18,7 @@ limitations under the License.
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var dis = require('matrix-react-sdk/lib/dispatcher');
+var dis = require('matrix-react-sdk-vj/lib/dispatcher');
 
 module.exports = React.createClass({
     displayName: 'RoomTooltip',
@@ -69,11 +69,12 @@ module.exports = React.createClass({
         style.left = 6 + parent.getBoundingClientRect().right + window.pageXOffset;
         style.display = "block";
 
-        var tooltip = (
-            <div className="mx_RoomTooltip" style={style} >
-                <div className="mx_RoomTooltip_chevron"></div>
-                { label }
-            </div>
+        var tooltip = ( <
+            div className = "mx_RoomTooltip"
+            style = { style } >
+            <
+            div className = "mx_RoomTooltip_chevron" > < /div> { label } <
+            /div>
         );
 
         // Render the tooltip manually, as we wish it not to be rendered within the parent
@@ -89,9 +90,10 @@ module.exports = React.createClass({
 
     render: function() {
         // Render a placeholder
-        return (
-            <div className={ this.props.className } >
-            </div>
+        return ( <
+            div className = { this.props.className } >
+            <
+            /div>
         );
     }
 });

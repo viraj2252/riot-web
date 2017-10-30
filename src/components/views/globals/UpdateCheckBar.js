@@ -17,10 +17,10 @@ limitations under the License.
 'use strict';
 
 import React from 'react';
-import { _t } from 'matrix-react-sdk/lib/languageHandler';
-import PlatformPeg from 'matrix-react-sdk/lib/PlatformPeg';
-import {updateCheckStatusEnum} from '../../../vector/platform/VectorBasePlatform';
-import AccessibleButton from 'matrix-react-sdk/lib/components/views/elements/AccessibleButton';
+import { _t } from 'matrix-react-sdk-vj/lib/languageHandler';
+import PlatformPeg from 'matrix-react-sdk-vj/lib/PlatformPeg';
+import { updateCheckStatusEnum } from '../../../vector/platform/VectorBasePlatform';
+import AccessibleButton from 'matrix-react-sdk-vj/lib/components/views/elements/AccessibleButton';
 
 const doneStatuses = [
     updateCheckStatusEnum.ERROR,
@@ -42,7 +42,7 @@ export default React.createClass({
     },
 
     getStatusText: function() {
-        switch(this.props.status) {
+        switch (this.props.status) {
             case updateCheckStatusEnum.ERROR:
                 return _t('Error encountered (%(errorDetail)s).', { errorDetail: this.props.detail });
             case updateCheckStatusEnum.CHECKING:
@@ -52,8 +52,7 @@ export default React.createClass({
             case updateCheckStatusEnum.DOWNLOADING:
                 return _t('Downloading update...');
         }
-    }
-    ,
+    },
 
     hideToolbar: function() {
         PlatformPeg.get().stopUpdateCheck();
@@ -65,21 +64,34 @@ export default React.createClass({
 
         let image;
         if (doneStatuses.includes(this.props.status)) {
-            image = <img className="mx_MatrixToolbar_warning" src="img/warning.svg" width="24" height="23" alt={warning}/>;
+            image = < img className = "mx_MatrixToolbar_warning"
+            src = "img/warning.svg"
+            width = "24"
+            height = "23"
+            alt = { warning }
+            />;
         } else {
-            image = <img className="mx_MatrixToolbar_warning" src="img/spinner.gif" width="24" height="23" alt={message}/>;
+            image = < img className = "mx_MatrixToolbar_warning"
+            src = "img/spinner.gif"
+            width = "24"
+            height = "23"
+            alt = { message }
+            />;
         }
 
-        return (
-            <div className="mx_MatrixToolbar">
-                {image}
-                <div className="mx_MatrixToolbar_content">
-                    {message}
-                </div>
-                <AccessibleButton className="mx_MatrixToolbar_close" onClick={this.hideToolbar}>
-                    <img src="img/cancel.svg" width="18" height="18" />
-                </AccessibleButton>
-            </div>
+        return ( <
+            div className = "mx_MatrixToolbar" > { image } <
+            div className = "mx_MatrixToolbar_content" > { message } <
+            /div> <
+            AccessibleButton className = "mx_MatrixToolbar_close"
+            onClick = { this.hideToolbar } >
+            <
+            img src = "img/cancel.svg"
+            width = "18"
+            height = "18" / >
+            <
+            /AccessibleButton> <
+            /div>
         );
     }
 });

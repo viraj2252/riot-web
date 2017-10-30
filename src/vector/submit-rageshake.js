@@ -17,9 +17,9 @@ limitations under the License.
 import pako from 'pako';
 import Promise from 'bluebird';
 
-import MatrixClientPeg from 'matrix-react-sdk/lib/MatrixClientPeg';
-import PlatformPeg from 'matrix-react-sdk/lib/PlatformPeg';
-import { _t } from 'matrix-react-sdk/lib/languageHandler';
+import MatrixClientPeg from 'matrix-react-sdk-vj/lib/MatrixClientPeg';
+import PlatformPeg from 'matrix-react-sdk-vj/lib/PlatformPeg';
+import { _t } from 'matrix-react-sdk-vj/lib/languageHandler';
 
 import rageshake from './rageshake'
 
@@ -58,8 +58,7 @@ export default async function sendBugReport(bugReportEndpoint, opts) {
     let version = "UNKNOWN";
     try {
         version = await PlatformPeg.get().getAppVersion();
-    }
-    catch (err) {} // PlatformPeg already logs this.
+    } catch (err) {} // PlatformPeg already logs this.
 
     let userAgent = "UNKNOWN";
     if (window.navigator && window.navigator.userAgent) {

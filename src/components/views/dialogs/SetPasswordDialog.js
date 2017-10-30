@@ -15,9 +15,9 @@ limitations under the License.
 */
 
 import React from 'react';
-import sdk from 'matrix-react-sdk';
-import { _t } from 'matrix-react-sdk/lib/languageHandler';
-import Modal from 'matrix-react-sdk/lib/Modal';
+import sdk from 'matrix-react-sdk-vj';
+import { _t } from 'matrix-react-sdk-vj/lib/languageHandler';
+import Modal from 'matrix-react-sdk-vj/lib/Modal';
 
 const WarmFuzzy = function(props) {
     const BaseDialog = sdk.getComponent('views.dialogs.BaseDialog');

@@ -20,10 +20,10 @@ require('skin-sdk');
 
 var jssdk = require('matrix-js-sdk');
 
-var sdk = require('matrix-react-sdk');
-var peg = require('matrix-react-sdk/lib/MatrixClientPeg');
-var dis = require('matrix-react-sdk/lib/dispatcher');
-var PageTypes = require('matrix-react-sdk/lib/PageTypes');
+var sdk = require('matrix-react-sdk-vj');
+var peg = require('matrix-react-sdk-vj/lib/MatrixClientPeg');
+var dis = require('matrix-react-sdk-vj/lib/dispatcher');
+var PageTypes = require('matrix-react-sdk-vj/lib/PageTypes');
 var MatrixChat = sdk.getComponent('structures.MatrixChat');
 var RoomDirectory = sdk.getComponent('structures.RoomDirectory');
 var RoomPreviewBar = sdk.getComponent('rooms.RoomPreviewBar');
@@ -38,13 +38,13 @@ import Promise from 'bluebird';
 var test_utils = require('../test-utils');
 var MockHttpBackend = require('matrix-mock-request');
 
-var HS_URL='http://localhost';
-var IS_URL='http://localhost';
-var USER_ID='@me:localhost';
-var ACCESS_TOKEN='access_token';
+var HS_URL = 'http://localhost';
+var IS_URL = 'http://localhost';
+var USER_ID = '@me:localhost';
+var ACCESS_TOKEN = 'access_token';
 
-describe('joining a room', function () {
-    describe('over federation', function () {
+describe('joining a room', function() {
+    describe('over federation', function() {
         var parentDiv;
         var httpBackend;
         var matrixChat;
@@ -80,17 +80,23 @@ describe('joining a room', function () {
             // return before the first /sync arrives.
 
             // start with a logged-in client
-            localStorage.setItem("mx_hs_url", HS_URL );
-            localStorage.setItem("mx_is_url", IS_URL );
-            localStorage.setItem("mx_access_token", ACCESS_TOKEN );
+            localStorage.setItem("mx_hs_url", HS_URL);
+            localStorage.setItem("mx_is_url", IS_URL);
+            localStorage.setItem("mx_access_token", ACCESS_TOKEN);
             localStorage.setItem("mx_user_id", USER_ID);
 
-            var mc = (
-                <MatrixChat config={{}}
-                    makeRegistrationUrl={()=>{throw new Error("unimplemented");}}
-                    initialScreenAfterLogin={{
+            var mc = ( <
+                MatrixChat config = {
+                    {}
+                }
+                makeRegistrationUrl = {
+                    () => { throw new Error("unimplemented"); }
+                }
+                initialScreenAfterLogin = {
+                    {
                         screen: 'directory',
-                    }}
+                    }
+                }
                 />
             );
             matrixChat = ReactDOM.render(mc, parentDiv);
@@ -107,7 +113,7 @@ describe('joining a room', function () {
                 timeout: 1000,
             }).then(() => {
                 // wait for the directory requests
-                httpBackend.when('POST', '/publicRooms').respond(200, {chunk: []});
+                httpBackend.when('POST', '/publicRooms').respond(200, { chunk: [] });
                 httpBackend.when('GET', '/thirdparty/protocols').respond(200, {});
                 return httpBackend.flushAllExpected();
             }).then(() => {
@@ -121,13 +127,13 @@ describe('joining a room', function () {
                     roomDir, 'input');
                 input.value = ROOM_ALIAS;
                 ReactTestUtils.Simulate.change(input);
-                ReactTestUtils.Simulate.keyUp(input, {key: 'Enter'});
+                ReactTestUtils.Simulate.keyUp(input, { key: 'Enter' });
 
                 // that should create a roomview which will start a peek; wait
                 // for the peek.
-                httpBackend.when('GET', '/directory/room/'+encodeURIComponent(ROOM_ALIAS)).respond(200, { room_id: ROOM_ID });
-                httpBackend.when('GET', '/rooms/'+encodeURIComponent(ROOM_ID)+"/initialSync")
-                    .respond(401, {errcode: 'M_GUEST_ACCESS_FORBIDDEN'});
+                httpBackend.when('GET', '/directory/room/' + encodeURIComponent(ROOM_ALIAS)).respond(200, { room_id: ROOM_ID });
+                httpBackend.when('GET', '/rooms/' + encodeURIComponent(ROOM_ID) + "/initialSync")
+                    .respond(401, { errcode: 'M_GUEST_ACCESS_FORBIDDEN' });
 
                 return httpBackend.flushAllExpected();
             }).then(() => {
@@ -148,8 +154,8 @@ describe('joining a room', function () {
 
                 ReactTestUtils.Simulate.click(joinLink);
 
-                httpBackend.when('POST', '/join/'+encodeURIComponent(ROOM_ALIAS))
-                    .respond(200, {room_id: ROOM_ID});
+                httpBackend.when('POST', '/join/' + encodeURIComponent(ROOM_ALIAS))
+                    .respond(200, { room_id: ROOM_ID });
             }).then(() => {
                 // wait for the join request to be made
                 return Promise.delay(1);
@@ -170,7 +176,7 @@ describe('joining a room', function () {
                     roomView, "mx_Spinner");
 
                 // flush it through
-                return httpBackend.flush('/join/'+encodeURIComponent(ROOM_ALIAS));
+                return httpBackend.flush('/join/' + encodeURIComponent(ROOM_ALIAS));
             }).then(() => {
                 httpBackend.verifyNoOutstandingExpectation();
 
@@ -182,19 +188,19 @@ describe('joining a room', function () {
 
                 // now send the room down the /sync pipe
                 httpBackend.when('GET', '/sync').
-                    respond(200, {
-                        rooms: {
-                            join: {
-                                [ROOM_ID]: {
-                                    state: {},
-                                    timeline: {
-                                        events: [],
-                                        limited: true,
-                                    },
+                respond(200, {
+                    rooms: {
+                        join: {
+                            [ROOM_ID]: {
+                                state: {},
+                                timeline: {
+                                    events: [],
+                                    limited: true,
                                 },
                             },
                         },
-                    });
+                    },
+                });
                 return httpBackend.flush();
             }).then(() => {
                 // now the room should have loaded

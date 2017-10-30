@@ -16,29 +16,15 @@ limitations under the License.
 
 var React = require("react");
 var sanitizeHtml = require("sanitize-html");
-import { _t } from 'matrix-react-sdk/lib/languageHandler';
+import { _t } from 'matrix-react-sdk-vj/lib/languageHandler';
 
 module.exports = React.createClass({
-    displayName: 'VectorCustomServerDialog',
-    statics: {
-        replaces: 'CustomServerDialog',
-    },
+            displayName: 'VectorCustomServerDialog',
+            statics: {
+                replaces: 'CustomServerDialog',
+            },
 
-    render: function() {
-        return (
-            <div className="mx_ErrorDialog">
-                <div className="mx_Dialog_title">
-                    { _t('Custom Server Options') }
-                </div>
-                <div className="mx_Dialog_content">
-                    <span dangerouslySetInnerHTML={{__html: sanitizeHtml(_t('customServer_text'))}} />
-                </div>
-                <div className="mx_Dialog_buttons">
-                    <button onClick={this.props.onFinished} autoFocus={true}>
-                        { _t('Dismiss') }
-                    </button>
-                </div>
-            </div>
-        );
-    }
-});
+            render: function() {
+                return ( < div className = "mx_ErrorDialog" > < /div>);
+                }
+            });

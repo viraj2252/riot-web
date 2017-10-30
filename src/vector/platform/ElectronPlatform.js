@@ -17,17 +17,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import VectorBasePlatform, {updateCheckStatusEnum} from './VectorBasePlatform';
-import dis from 'matrix-react-sdk/lib/dispatcher';
-import { _t } from 'matrix-react-sdk/lib/languageHandler';
+import VectorBasePlatform, { updateCheckStatusEnum } from './VectorBasePlatform';
+import dis from 'matrix-react-sdk-vj/lib/dispatcher';
+import { _t } from 'matrix-react-sdk-vj/lib/languageHandler';
 import Promise from 'bluebird';
-import {remote, ipcRenderer} from 'electron';
+import { remote, ipcRenderer } from 'electron';
 import rageshake from '../rageshake';
 
 remote.autoUpdater.on('update-downloaded', onUpdateDownloaded);
 
 // try to flush the rageshake logs to indexeddb before quit.
-ipcRenderer.on('before-quit', function () {
+ipcRenderer.on('before-quit', function() {
     console.log('riot-desktop closing');
     rageshake.flush();
 });
@@ -139,8 +139,7 @@ export default class ElectronPlatform extends VectorBasePlatform {
 
         // Notifications in Electron use the HTML5 notification API
         const notification = new global.Notification(
-            title,
-            {
+            title, {
                 body: msg,
                 icon: avatarUrl,
                 tag: 'vector',
@@ -172,7 +171,7 @@ export default class ElectronPlatform extends VectorBasePlatform {
         notif.close();
     }
 
-    getAppVersion(): Promise<string> {
+    getAppVersion(): Promise < string > {
         return Promise.resolve(remote.app.getVersion());
     }
 
@@ -194,13 +193,13 @@ export default class ElectronPlatform extends VectorBasePlatform {
         return _t('Riot Desktop on %(platformName)s', { platformName: platformFriendlyName() });
     }
 
-    screenCaptureErrorString(): ?string {
+    screenCaptureErrorString(): ? string {
         return null;
     }
 
     isElectron(): boolean { return true; }
 
-    requestNotificationPermission(): Promise<string> {
+    requestNotificationPermission(): Promise < string > {
         return Promise.resolve('granted');
     }
 

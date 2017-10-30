@@ -15,10 +15,10 @@ limitations under the License.
 */
 
 import React from 'react';
-import sdk from 'matrix-react-sdk';
-import SdkConfig from 'matrix-react-sdk/lib/SdkConfig';
-import Modal from 'matrix-react-sdk/lib/Modal';
-import { _t } from 'matrix-react-sdk/lib/languageHandler';
+import sdk from 'matrix-react-sdk-vj';
+import SdkConfig from 'matrix-react-sdk-vj/lib/SdkConfig';
+import Modal from 'matrix-react-sdk-vj/lib/Modal';
+import { _t } from 'matrix-react-sdk-vj/lib/languageHandler';
 
 export default class BugReportDialog extends React.Component {
     constructor(props, context) {
@@ -97,7 +97,7 @@ export default class BugReportDialog extends React.Component {
         if (this._unmounted) {
             return;
         }
-        this.setState({progress: progress});
+        this.setState({ progress: progress });
     }
 
     render() {
@@ -105,68 +105,62 @@ export default class BugReportDialog extends React.Component {
 
         let error = null;
         if (this.state.err) {
-            error = <div className="error">
-                {this.state.err}
-            </div>;
+            error = < div className = "error" > { this.state.err } <
+                /div>;
         }
 
         let cancelButton = null;
         if (!this.state.busy) {
-            cancelButton = <button onClick={this._onCancel}>
-                { _t("Cancel") }
-            </button>;
+            cancelButton = < button onClick = { this._onCancel } > { _t("Cancel") } <
+                /button>;
         }
 
         let progress = null;
         if (this.state.busy) {
-            progress = (
-                <div className="progress">
-                    <Loader />
-                    {this.state.progress} ...
-                </div>
+            progress = ( <
+                div className = "progress" >
+                <
+                Loader / > { this.state.progress }... <
+                /div>
             );
         }
 
-        return (
-            <div className="mx_BugReportDialog">
-                <div className="mx_Dialog_title">
-                    { _t("Report a bug") }
-                </div>
-                <div className="mx_Dialog_content">
-                    <p>
-                    { _t("Please describe the bug. What did you do? What did you expect to happen? What actually happened?") }
-                    </p>
-                    <textarea
-                        className="mx_BugReportDialog_input"
-                        rows={5}
-                        onChange={this._onTextChange}
-                        value={this.state.text}
-                        placeholder={_t("Describe your problem here.")}
-                    />
-                    <p>
-                    { _t("In order to diagnose problems, logs from this client will be sent with this bug report. If you would prefer to only send the text above, please untick:") }
-                    </p>
-                    <input type="checkbox" checked={this.state.sendLogs}
-                        onChange={this._onSendLogsChange} id="mx_BugReportDialog_logs"/>
-                    <label htmlFor="mx_BugReportDialog_logs">
-                        { _t("Send logs") }
-                    </label>
-                    {progress}
-                    {error}
-                </div>
-                <div className="mx_Dialog_buttons">
-                    <button
-                        className="mx_Dialog_primary danger"
-                        onClick={this._onSubmit}
-                        autoFocus={true}
-                        disabled={this.state.busy}
-                    >
-                        { _t("Send") }
-                    </button>
+        return ( <
+            div className = "mx_BugReportDialog" >
+            <
+            div className = "mx_Dialog_title" > { _t("Report a bug") } <
+            /div> <
+            div className = "mx_Dialog_content" >
+            <
+            p > { _t("Please describe the bug. What did you do? What did you expect to happen? What actually happened?") } <
+            /p> <
+            textarea className = "mx_BugReportDialog_input"
+            rows = { 5 }
+            onChange = { this._onTextChange }
+            value = { this.state.text }
+            placeholder = { _t("Describe your problem here.") }
+            /> <
+            p > { _t("In order to diagnose problems, logs from this client will be sent with this bug report. If you would prefer to only send the text above, please untick:") } <
+            /p> <
+            input type = "checkbox"
+            checked = { this.state.sendLogs }
+            onChange = { this._onSendLogsChange }
+            id = "mx_BugReportDialog_logs" / >
+            <
+            label htmlFor = "mx_BugReportDialog_logs" > { _t("Send logs") } <
+            /label> { progress } { error } < /
+            div > <
+            div className = "mx_Dialog_buttons" >
+            <
+            button className = "mx_Dialog_primary danger"
+            onClick = { this._onSubmit }
+            autoFocus = { true }
+            disabled = { this.state.busy } > { _t("Send") } <
+            /button>
 
-                    {cancelButton}
-                </div>
-            </div>
+            { cancelButton } <
+            /div> < /
+            div >
         );
     }
 }

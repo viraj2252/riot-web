@@ -79,7 +79,7 @@ module.exports = {
             // everything. Until I figure out how to fix this, this is a
             // workaround.
             // We use the relative resource path with any '../'s on the front
-            // removed which gives a tree with matrix-react-sdk and vector
+            // removed which gives a tree with matrix-react-sdk-vj and vector
             // trees smashed together, but this fixes everything being under
             // various levels of '.' and '..'
             // Also, sometimes the resource path is absolute.

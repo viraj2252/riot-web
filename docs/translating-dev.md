@@ -8,7 +8,7 @@
 
 ## Adding new strings
 
-1. Check if the import ``import { _t } from 'matrix-react-sdk/lib/languageHandler';`` is present. If not add it to the other import statements.
+1. Check if the import ``import { _t } from 'matrix-react-sdk-vj/lib/languageHandler';`` is present. If not add it to the other import statements.
 2. Add ``_t()`` to your string. (Don't forget curly braces when you assign an expression to JSX attributes in the render method)
 3. Add the String to the ``en_EN.json`` file in ``src/i18n/strings`` (respect which repository you are on).
 

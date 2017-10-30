@@ -20,14 +20,14 @@ limitations under the License.
 import Promise from 'bluebird';
 import React from 'react';
 import classNames from 'classnames';
-import sdk from 'matrix-react-sdk';
-import { _t } from 'matrix-react-sdk/lib/languageHandler';
-import MatrixClientPeg from 'matrix-react-sdk/lib/MatrixClientPeg';
-import dis from 'matrix-react-sdk/lib/dispatcher';
-import DMRoomMap from 'matrix-react-sdk/lib/utils/DMRoomMap';
-import * as Rooms from 'matrix-react-sdk/lib/Rooms';
-import * as RoomNotifs from 'matrix-react-sdk/lib/RoomNotifs';
-import Modal from 'matrix-react-sdk/lib/Modal';
+import sdk from 'matrix-react-sdk-vj';
+import { _t } from 'matrix-react-sdk-vj/lib/languageHandler';
+import MatrixClientPeg from 'matrix-react-sdk-vj/lib/MatrixClientPeg';
+import dis from 'matrix-react-sdk-vj/lib/dispatcher';
+import DMRoomMap from 'matrix-react-sdk-vj/lib/utils/DMRoomMap';
+import * as Rooms from 'matrix-react-sdk-vj/lib/Rooms';
+import * as RoomNotifs from 'matrix-react-sdk-vj/lib/RoomNotifs';
+import Modal from 'matrix-react-sdk-vj/lib/Modal';
 
 module.exports = React.createClass({
     displayName: 'RoomTileContextMenu',
@@ -71,7 +71,7 @@ module.exports = React.createClass({
                     }).catch(function(err) {
                         var ErrorDialog = sdk.getComponent("dialogs.ErrorDialog");
                         Modal.createTrackedDialog('Failed to remove tag from room 1', '', ErrorDialog, {
-                            title: _t('Failed to remove tag %(tagName)s from room', {tagName: tagNameOff}),
+                            title: _t('Failed to remove tag %(tagName)s from room', { tagName: tagNameOff }),
                             description: ((err && err.message) ? err.message : _t('Operation failed')),
                         });
                     });
@@ -88,7 +88,7 @@ module.exports = React.createClass({
                     }).catch(function(err) {
                         var ErrorDialog = sdk.getComponent("dialogs.ErrorDialog");
                         Modal.createTrackedDialog('Failed to remove tag from room 2', '', ErrorDialog, {
-                            title: _t('Failed to remove tag %(tagName)s from room', {tagName: tagNameOn}),
+                            title: _t('Failed to remove tag %(tagName)s from room', { tagName: tagNameOn }),
                             description: ((err && err.message) ? err.message : _t('Operation failed')),
                         });
                     });
@@ -106,10 +106,10 @@ module.exports = React.createClass({
             });
             this._toggleTag("m.favourite", "m.lowpriority");
         } else if (this.state.isFavourite) {
-            this.setState({isFavourite: false});
+            this.setState({ isFavourite: false });
             this._toggleTag(null, "m.favourite");
         } else if (!this.state.isFavourite) {
-            this.setState({isFavourite: true});
+            this.setState({ isFavourite: true });
             this._toggleTag("m.favourite");
         }
     },
@@ -123,10 +123,10 @@ module.exports = React.createClass({
             });
             this._toggleTag("m.lowpriority", "m.favourite");
         } else if (this.state.isLowPriority) {
-            this.setState({isLowPriority: false});
+            this.setState({ isLowPriority: false });
             this._toggleTag(null, "m.lowpriority");
         } else if (!this.state.isLowPriority) {
-            this.setState({isLowPriority: true});
+            this.setState({ isLowPriority: true });
             this._toggleTag("m.lowpriority");
         }
     },
@@ -188,7 +188,7 @@ module.exports = React.createClass({
             var errCode = err.errcode || "unknown error code";
             var ErrorDialog = sdk.getComponent("dialogs.ErrorDialog");
             Modal.createTrackedDialog('Failed to forget room', '', ErrorDialog, {
-                title: _t('Failed to forget room %(errCode)s', {errCode: errCode}),
+                title: _t('Failed to forget room %(errCode)s', { errCode: errCode }),
                 description: ((err && err.message) ? err.message : _t('Operation failed')),
             });
         });
@@ -267,32 +267,69 @@ module.exports = React.createClass({
             'mx_RoomTileContextMenu_notif_fieldSet': this.state.roomNotifState == RoomNotifs.MUTE,
         });
 
-        return (
-            <div>
-                <div className="mx_RoomTileContextMenu_notif_picker" >
-                    <img src="img/notif-slider.svg" width="20" height="107" />
-                </div>
-                <div className={ alertMeClasses } onClick={this._onClickAlertMe} >
-                    <img className="mx_RoomTileContextMenu_notif_activeIcon" src="img/notif-active.svg" width="12" height="12" />
-                    <img className="mx_RoomTileContextMenu_notif_icon mx_filterFlipColor" src="img/icon-context-mute-off-copy.svg" width="16" height="12" />
-                    { _t('All messages (loud)') }
-                </div>
-                <div className={ allNotifsClasses } onClick={this._onClickAllNotifs} >
-                    <img className="mx_RoomTileContextMenu_notif_activeIcon" src="img/notif-active.svg" width="12" height="12" />
-                    <img className="mx_RoomTileContextMenu_notif_icon mx_filterFlipColor" src="img/icon-context-mute-off.svg" width="16" height="12" />
-                    { _t('All messages') }
-                </div>
-                <div className={ mentionsClasses } onClick={this._onClickMentions} >
-                    <img className="mx_RoomTileContextMenu_notif_activeIcon" src="img/notif-active.svg" width="12" height="12" />
-                    <img className="mx_RoomTileContextMenu_notif_icon mx_filterFlipColor" src="img/icon-context-mute-mentions.svg" width="16" height="12" />
-                    { _t('Mentions only') }
-                </div>
-                <div className={ muteNotifsClasses } onClick={this._onClickMute} >
-                    <img className="mx_RoomTileContextMenu_notif_activeIcon" src="img/notif-active.svg" width="12" height="12" />
-                    <img className="mx_RoomTileContextMenu_notif_icon mx_filterFlipColor" src="img/icon-context-mute.svg" width="16" height="12" />
-                    { _t('Mute') }
-                </div>
-            </div>
+        return ( <
+            div >
+            <
+            div className = "mx_RoomTileContextMenu_notif_picker" >
+            <
+            img src = "img/notif-slider.svg"
+            width = "20"
+            height = "107" / >
+            <
+            /div> <
+            div className = { alertMeClasses }
+            onClick = { this._onClickAlertMe } >
+            <
+            img className = "mx_RoomTileContextMenu_notif_activeIcon"
+            src = "img/notif-active.svg"
+            width = "12"
+            height = "12" / >
+            <
+            img className = "mx_RoomTileContextMenu_notif_icon mx_filterFlipColor"
+            src = "img/icon-context-mute-off-copy.svg"
+            width = "16"
+            height = "12" / > { _t('All messages (loud)') } <
+            /div> <
+            div className = { allNotifsClasses }
+            onClick = { this._onClickAllNotifs } >
+            <
+            img className = "mx_RoomTileContextMenu_notif_activeIcon"
+            src = "img/notif-active.svg"
+            width = "12"
+            height = "12" / >
+            <
+            img className = "mx_RoomTileContextMenu_notif_icon mx_filterFlipColor"
+            src = "img/icon-context-mute-off.svg"
+            width = "16"
+            height = "12" / > { _t('All messages') } <
+            /div> <
+            div className = { mentionsClasses }
+            onClick = { this._onClickMentions } >
+            <
+            img className = "mx_RoomTileContextMenu_notif_activeIcon"
+            src = "img/notif-active.svg"
+            width = "12"
+            height = "12" / >
+            <
+            img className = "mx_RoomTileContextMenu_notif_icon mx_filterFlipColor"
+            src = "img/icon-context-mute-mentions.svg"
+            width = "16"
+            height = "12" / > { _t('Mentions only') } <
+            /div> <
+            div className = { muteNotifsClasses }
+            onClick = { this._onClickMute } >
+            <
+            img className = "mx_RoomTileContextMenu_notif_activeIcon"
+            src = "img/notif-active.svg"
+            width = "12"
+            height = "12" / >
+            <
+            img className = "mx_RoomTileContextMenu_notif_icon mx_filterFlipColor"
+            src = "img/icon-context-mute.svg"
+            width = "16"
+            height = "12" / > { _t('Mute') } <
+            /div> <
+            /div>
         );
     },
 
@@ -320,13 +357,18 @@ module.exports = React.createClass({
                 break;
         }
 
-        return (
-            <div>
-                <div className="mx_RoomTileContextMenu_leave" onClick={ leaveClickHandler } >
-                    <img className="mx_RoomTileContextMenu_tag_icon" src="img/icon_context_delete.svg" width="15" height="15" />
-                    { leaveText }
-                </div>
-            </div>
+        return ( <
+            div >
+            <
+            div className = "mx_RoomTileContextMenu_leave"
+            onClick = { leaveClickHandler } >
+            <
+            img className = "mx_RoomTileContextMenu_tag_icon"
+            src = "img/icon_context_delete.svg"
+            width = "15"
+            height = "15" / > { leaveText } <
+            /div> <
+            /div>
         );
     },
 
@@ -349,24 +391,49 @@ module.exports = React.createClass({
             'mx_RoomTileContextMenu_tag_fieldDisabled': false,
         });
 
-        return (
-            <div>
-                <div className={ favouriteClasses } onClick={this._onClickFavourite} >
-                    <img className="mx_RoomTileContextMenu_tag_icon" src="img/icon_context_fave.svg" width="15" height="15" />
-                    <img className="mx_RoomTileContextMenu_tag_icon_set" src="img/icon_context_fave_on.svg" width="15" height="15" />
-                    { _t('Favourite') }
-                </div>
-                <div className={ lowPriorityClasses } onClick={this._onClickLowPriority} >
-                    <img className="mx_RoomTileContextMenu_tag_icon" src="img/icon_context_low.svg" width="15" height="15" />
-                    <img className="mx_RoomTileContextMenu_tag_icon_set" src="img/icon_context_low_on.svg" width="15" height="15" />
-                    { _t('Low Priority') }
-                </div>
-                <div className={ dmClasses } onClick={this._onClickDM} >
-                    <img className="mx_RoomTileContextMenu_tag_icon" src="img/icon_context_person.svg" width="15" height="15" />
-                    <img className="mx_RoomTileContextMenu_tag_icon_set" src="img/icon_context_person_on.svg" width="15" height="15" />
-                    { _t('Direct Chat') }
-                </div>
-            </div>
+        return ( <
+            div >
+            <
+            div className = { favouriteClasses }
+            onClick = { this._onClickFavourite } >
+            <
+            img className = "mx_RoomTileContextMenu_tag_icon"
+            src = "img/icon_context_fave.svg"
+            width = "15"
+            height = "15" / >
+            <
+            img className = "mx_RoomTileContextMenu_tag_icon_set"
+            src = "img/icon_context_fave_on.svg"
+            width = "15"
+            height = "15" / > { _t('Favourite') } <
+            /div> <
+            div className = { lowPriorityClasses }
+            onClick = { this._onClickLowPriority } >
+            <
+            img className = "mx_RoomTileContextMenu_tag_icon"
+            src = "img/icon_context_low.svg"
+            width = "15"
+            height = "15" / >
+            <
+            img className = "mx_RoomTileContextMenu_tag_icon_set"
+            src = "img/icon_context_low_on.svg"
+            width = "15"
+            height = "15" / > { _t('Low Priority') } <
+            /div> <
+            div className = { dmClasses }
+            onClick = { this._onClickDM } >
+            <
+            img className = "mx_RoomTileContextMenu_tag_icon"
+            src = "img/icon_context_person.svg"
+            width = "15"
+            height = "15" / >
+            <
+            img className = "mx_RoomTileContextMenu_tag_icon_set"
+            src = "img/icon_context_person_on.svg"
+            width = "15"
+            height = "15" / > { _t('Direct Chat') } <
+            /div> <
+            /div>
         );
     },
 
@@ -380,14 +447,11 @@ module.exports = React.createClass({
             return this._renderLeaveMenu(myMember.membership);
         }
 
-        return (
-            <div>
-                { this._renderNotifMenu() }
-                <hr className="mx_RoomTileContextMenu_separator" />
-                { this._renderLeaveMenu(myMember.membership) }
-                <hr className="mx_RoomTileContextMenu_separator" />
-                { this._renderRoomTagMenu() }
-            </div>
+        return ( <
+            div > { this._renderNotifMenu() } <
+            hr className = "mx_RoomTileContextMenu_separator" / > { this._renderLeaveMenu(myMember.membership) } <
+            hr className = "mx_RoomTileContextMenu_separator" / > { this._renderRoomTagMenu() } <
+            /div>
         );
     }
 });

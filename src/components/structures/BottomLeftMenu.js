@@ -17,9 +17,9 @@ limitations under the License.
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import sdk from 'matrix-react-sdk';
-import dis from 'matrix-react-sdk/lib/dispatcher';
-import AccessibleButton from 'matrix-react-sdk/lib/components/views/elements/AccessibleButton';
+import sdk from 'matrix-react-sdk-vj';
+import dis from 'matrix-react-sdk-vj/lib/dispatcher';
+import AccessibleButton from 'matrix-react-sdk-vj/lib/components/views/elements/AccessibleButton';
 import Velocity from 'velocity-vector';
 import 'velocity-vector/velocity.ui';
 
@@ -33,12 +33,12 @@ module.exports = React.createClass({
     },
 
     getInitialState: function() {
-        return({
-            directoryHover : false,
-            roomsHover : false,
+        return ({
+            directoryHover: false,
+            roomsHover: false,
             homeHover: false,
-            peopleHover : false,
-            settingsHover : false,
+            peopleHover: false,
+            settingsHover: false,
         });
     },
 
@@ -146,7 +146,9 @@ module.exports = React.createClass({
     getLabel: function(label, show) {
         if (show) {
             var RoomTooltip = sdk.getComponent("rooms.RoomTooltip");
-            return <RoomTooltip className="mx_BottomLeftMenu_tooltip" label={label} />;
+            return <RoomTooltip className = "mx_BottomLeftMenu_tooltip"
+            label = { label }
+            />;
         }
     },
 
@@ -169,24 +171,35 @@ module.exports = React.createClass({
         const CreateRoomButton = sdk.getComponent('elements.CreateRoomButton');
         const SettingsButton = sdk.getComponent('elements.SettingsButton');
 
-        return (
-            <div className="mx_BottomLeftMenu">
-                <div className="mx_BottomLeftMenu_options">
-                    <HomeButton tooltip={true} />
-                    <div ref={this._collectPeopleButton}>
-                        <StartChatButton tooltip={true} />
-                    </div>
-                    <div ref={this._collectDirectoryButton}>
-                        <RoomDirectoryButton tooltip={true} />
-                    </div>
-                    <div ref={this._collectCreateRoomButton}>
-                        <CreateRoomButton tooltip={true} />
-                    </div>
-                    <span className="mx_BottomLeftMenu_settings">
-                        <SettingsButton tooltip={true} />
-                    </span>
-                </div>
-            </div>
+        return ( <
+            div className = "mx_BottomLeftMenu" >
+            <
+            div className = "mx_BottomLeftMenu_options" >
+            <
+            HomeButton tooltip = { true }
+            /> <
+            div ref = { this._collectPeopleButton } >
+            <
+            StartChatButton tooltip = { true }
+            /> <
+            /div> <
+            div ref = { this._collectDirectoryButton } >
+            <
+            RoomDirectoryButton tooltip = { true }
+            /> <
+            /div> <
+            div ref = { this._collectCreateRoomButton } >
+            <
+            CreateRoomButton tooltip = { true }
+            /> <
+            /div> <
+            span className = "mx_BottomLeftMenu_settings" >
+            <
+            SettingsButton tooltip = { true }
+            /> <
+            /span> <
+            /div> <
+            /div>
         );
     }
 });

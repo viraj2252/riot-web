@@ -9,30 +9,30 @@
 // This could readily be automated, but it's nice to explicitly
 // control when we languages are available.
 const INCLUDE_LANGS = [
-    {'value': 'da', 'label': 'Dansk'},
-    {'value': 'de_DE', 'label': 'Deutsch'},
-    {'value': 'en_EN', 'label': 'English'},
-    {'value': 'en_US', 'label': 'English (US)'},
-    {'value': 'el', 'label': 'Ελληνικά'},
-    {'value': 'eo', 'label': 'Esperanto'},
-    {'value': 'es', 'label': 'Español'},
-    {'value': 'eu', 'label': 'Euskal'},
-    {'value': 'fr', 'label': 'Français'},
-    {'value': 'hu', 'label': 'Magyar'},
-    {'value': 'ko', 'label': '한국어'},
-    {'value': 'lv', 'label': 'Latviešu'},
-    {'value': 'nb_NO', 'label': 'Norwegian Bokmål'},
-    {'value': 'nl', 'label': 'Nederlands'},
-    {'value': 'pl', 'label': 'Polski'},
-    {'value': 'pt', 'label': 'Português'},
-    {'value': 'pt_BR', 'label': 'Português do Brasil'},
-    {'value': 'ru', 'label': 'Русский'},
-    {'value': 'sv', 'label': 'Svenska'},
-    {'value': 'th', 'label': 'ไทย'},
-    {'value': 'te', 'label': 'తెలుగు'},
-    {'value': 'tr', 'label': 'Türk'},
-    {'value': 'zh_Hans', 'label': '简体中文'}, // simplified chinese
-    {'value': 'zh_Hant', 'label': '繁體中文'}, // traditional chinese
+    { 'value': 'da', 'label': 'Dansk' },
+    { 'value': 'de_DE', 'label': 'Deutsch' },
+    { 'value': 'en_EN', 'label': 'English' },
+    { 'value': 'en_US', 'label': 'English (US)' },
+    { 'value': 'el', 'label': 'Ελληνικά' },
+    { 'value': 'eo', 'label': 'Esperanto' },
+    { 'value': 'es', 'label': 'Español' },
+    { 'value': 'eu', 'label': 'Euskal' },
+    { 'value': 'fr', 'label': 'Français' },
+    { 'value': 'hu', 'label': 'Magyar' },
+    { 'value': 'ko', 'label': '한국어' },
+    { 'value': 'lv', 'label': 'Latviešu' },
+    { 'value': 'nb_NO', 'label': 'Norwegian Bokmål' },
+    { 'value': 'nl', 'label': 'Nederlands' },
+    { 'value': 'pl', 'label': 'Polski' },
+    { 'value': 'pt', 'label': 'Português' },
+    { 'value': 'pt_BR', 'label': 'Português do Brasil' },
+    { 'value': 'ru', 'label': 'Русский' },
+    { 'value': 'sv', 'label': 'Svenska' },
+    { 'value': 'th', 'label': 'ไทย' },
+    { 'value': 'te', 'label': 'తెలుగు' },
+    { 'value': 'tr', 'label': 'Türk' },
+    { 'value': 'zh_Hans', 'label': '简体中文' }, // simplified chinese
+    { 'value': 'zh_Hant', 'label': '繁體中文' }, // traditional chinese
 ];
 
 // cpx includes globbed parts of the filename in the destination, but excludes
@@ -47,7 +47,15 @@ const COPY_LIST = [
     ["src/skins/vector/{fonts,img}/**", "webapp"],
     ["node_modules/emojione/assets/svg/*", "webapp/emojione/svg/"],
     ["node_modules/emojione/assets/png/*", "webapp/emojione/png/"],
+    ["riotv2/*", "webapp/riotv2/"],
+    ["nginx-gen/*", "webapp/nginx-gen/"],
     ["./config.json", "webapp", { directwatch: 1 }],
+    ["./Dockerfile", "webapp", { directwatch: 1 }],
+    ["./docker-compose.yaml", "webapp", { directwatch: 1 }],
+    ["templates/*", "webapp/templates/"],
+    ["./.env", "webapp", { directwatch: 1 }],
+    ["./apache.dockerfile", "webapp", { directwatch: 1 }],
+    ["./ginx-ngen-vj.dockerfile", "webapp", { directwatch: 1 }],
 ];
 
 INCLUDE_LANGS.forEach(function(l) {
@@ -126,7 +134,7 @@ function next(i, err) {
                 .on('ready', cb)
                 .on('error', errCheck);
         } else if (opts.lang) {
-            const reactSdkFile = 'node_modules/matrix-react-sdk/src/i18n/strings/' + source + '.json';
+            const reactSdkFile = 'node_modules/matrix-react-sdk-vj/src/i18n/strings/' + source + '.json';
             const riotWebFile = 'src/i18n/strings/' + source + '.json';
 
             const translations = {};
@@ -153,7 +161,7 @@ function next(i, err) {
 }
 
 function genLangFile(lang, dest) {
-    const reactSdkFile = 'node_modules/matrix-react-sdk/src/i18n/strings/' + lang + '.json';
+    const reactSdkFile = 'node_modules/matrix-react-sdk-vj/src/i18n/strings/' + lang + '.json';
     const riotWebFile = 'src/i18n/strings/' + lang + '.json';
 
     let translations = {};
@@ -180,9 +188,9 @@ function genLangList() {
         const normalizedLanguage = lang.value.toLowerCase().replace("_", "-");
         const languageParts = normalizedLanguage.split('-');
         if (languageParts.length == 2 && languageParts[0] == languageParts[1]) {
-            languages[languageParts[0]] = {'fileName': lang.value + '.json', 'label': lang.label};
+            languages[languageParts[0]] = { 'fileName': lang.value + '.json', 'label': lang.label };
         } else {
-            languages[normalizedLanguage] = {'fileName': lang.value + '.json', 'label': lang.label};
+            languages[normalizedLanguage] = { 'fileName': lang.value + '.json', 'label': lang.label };
         }
     });
     fs.writeFile('webapp/i18n/languages.json', JSON.stringify(languages, null, 4), function(err) {

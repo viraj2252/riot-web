@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Fetches the js-sdk and matrix-react-sdk dependencies for development
+# Fetches the js-sdk and matrix-react-sdk-vj dependencies for development
 # or testing purposes
 # If there exists a branch of that dependency with the same name as
 # the branch the current checkout is on, use that branch. Otherwise,
@@ -72,21 +72,21 @@ echo -en 'travis_fold:end:matrix-js-sdk\r'
 
 ##############################
 
-echo -en 'travis_fold:start:matrix-react-sdk\r'
-echo 'Setting up matrix-react-sdk'
+echo -en 'travis_fold:start:matrix-react-sdk-vj\r'
+echo 'Setting up matrix-react-sdk-vj'
 
-dodep matrix-org matrix-react-sdk
+dodep matrix-org matrix-react-sdk-vj
 
 # replace the version of js-sdk that got pulled into react-sdk with a symlink
 # to our version. Make sure to do this *after* doing 'npm i' in react-sdk,
 # otherwise npm helpfully moves another-json from matrix-js-sdk/node_modules
-# into matrix-react-sdk/node_modules.
+# into matrix-react-sdk-vj/node_modules.
 #
 # (note this matches the instructions in the README.)
-rm -r node_modules/matrix-react-sdk/node_modules/matrix-js-sdk
-ln -s ../../matrix-js-sdk node_modules/matrix-react-sdk/node_modules/
+rm -r node_modules/matrix-react-sdk-vj/node_modules/matrix-js-sdk
+ln -s ../../matrix-js-sdk node_modules/matrix-react-sdk-vj/node_modules/
 
-echo -en 'travis_fold:end:matrix-react-sdk\r'
+echo -en 'travis_fold:end:matrix-react-sdk-vj\r'
 
 ##############################
 
@@ -95,4 +95,4 @@ echo -en 'travis_fold:end:matrix-react-sdk\r'
 # to define the npm prefix somewhere so it could put the
 # intermediate symlinks there. Instead, we do it ourselves.
 mkdir -p node_modules/.bin
-ln -sfv ../matrix-react-sdk/scripts/reskindex.js node_modules/.bin/reskindex
+ln -sfv ../matrix-react-sdk-vj/scripts/reskindex.js node_modules/.bin/reskindex

@@ -18,21 +18,21 @@ limitations under the License.
 
 var React = require('react');
 
-var MatrixClientPeg = require('matrix-react-sdk/lib/MatrixClientPeg');
+var MatrixClientPeg = require('matrix-react-sdk-vj/lib/MatrixClientPeg');
 var ContentRepo = require("matrix-js-sdk").ContentRepo;
-var Modal = require('matrix-react-sdk/lib/Modal');
-var sdk = require('matrix-react-sdk');
-var dis = require('matrix-react-sdk/lib/dispatcher');
+var Modal = require('matrix-react-sdk-vj/lib/Modal');
+var sdk = require('matrix-react-sdk-vj');
+var dis = require('matrix-react-sdk-vj/lib/dispatcher');
 
 var linkify = require('linkifyjs');
 var linkifyString = require('linkifyjs/string');
-var linkifyMatrix = require('matrix-react-sdk/lib/linkify-matrix');
+var linkifyMatrix = require('matrix-react-sdk-vj/lib/linkify-matrix');
 var sanitizeHtml = require('sanitize-html');
 import Promise from 'bluebird';
 
-import { _t } from 'matrix-react-sdk/lib/languageHandler';
+import { _t } from 'matrix-react-sdk-vj/lib/languageHandler';
 
-import {instanceForInstanceId, protocolNameForInstanceId} from '../../utils/DirectoryUtils';
+import { instanceForInstanceId, protocolNameForInstanceId } from '../../utils/DirectoryUtils';
 
 linkifyMatrix(linkify);
 
@@ -68,13 +68,13 @@ module.exports = React.createClass({
         this.scrollPanel = null;
         this.protocols = null;
 
-        this.setState({protocolsLoading: true});
+        this.setState({ protocolsLoading: true });
         MatrixClientPeg.get().getThirdpartyProtocols().done((response) => {
             this.protocols = response;
-            this.setState({protocolsLoading: false});
+            this.setState({ protocolsLoading: false });
         }, (err) => {
             console.warn(`error loading thirdparty protocols: ${err}`);
-            this.setState({protocolsLoading: false});
+            this.setState({ protocolsLoading: false });
             if (MatrixClientPeg.get().isGuest()) {
                 // Guests currently aren't allowed to use this API, so
                 // ignore this as otherwise this error is literally the
@@ -124,7 +124,7 @@ module.exports = React.createClass({
         // remember the next batch token when we sent the request
         // too. If it's changed, appending to the list will corrupt it.
         const my_next_batch = this.nextBatch;
-        const opts = {limit: 20};
+        const opts = { limit: 20 };
         if (my_server != MatrixClientPeg.getHomeServerName()) {
             opts.server = my_server;
         }
@@ -134,13 +134,12 @@ module.exports = React.createClass({
             opts.include_all_networks = true;
         }
         if (this.nextBatch) opts.since = this.nextBatch;
-        if (my_filter_string) opts.filter = { generic_search_term: my_filter_string } ;
+        if (my_filter_string) opts.filter = { generic_search_term: my_filter_string };
         return MatrixClientPeg.get().publicRooms(opts).then((data) => {
             if (
                 my_filter_string != this.state.filterString ||
                 my_server != this.state.roomServer ||
-                my_next_batch != this.nextBatch)
-            {
+                my_next_batch != this.nextBatch) {
                 // if the filter or server has changed since this request was sent,
                 // throw away the result (don't even clear the busy flag
                 // since we must still have a request in flight)
@@ -163,8 +162,7 @@ module.exports = React.createClass({
             if (
                 my_filter_string != this.state.filterString ||
                 my_server != this.state.roomServer ||
-                my_next_batch != this.nextBatch)
-            {
+                my_next_batch != this.nextBatch) {
                 // as above: we don't care about errors for old
                 // requests either
                 return;
@@ -201,9 +199,9 @@ module.exports = React.createClass({
 
         var desc;
         if (alias) {
-            desc = _t('Delete the room alias %(alias)s and remove %(name)s from the directory?', {alias: alias, name: name});
+            desc = _t('Delete the room alias %(alias)s and remove %(name)s from the directory?', { alias: alias, name: name });
         } else {
-            desc = _t('Remove %(name)s from the directory?', {name: name});
+            desc = _t('Remove %(name)s from the directory?', { name: name });
         }
 
         Modal.createTrackedDialog('Remove from Directory', '', QuestionDialog, {
@@ -214,7 +212,7 @@ module.exports = React.createClass({
 
                 var Loader = sdk.getComponent("elements.Spinner");
                 var modal = Modal.createDialog(Loader);
-                var step = _t('remove %(name)s from the directory.', {name: name});
+                var step = _t('remove %(name)s from the directory.', { name: name });
 
                 MatrixClientPeg.get().setRoomDirectoryVisibility(room.room_id, 'private').then(() => {
                     if (!alias) return;
@@ -347,14 +345,14 @@ module.exports = React.createClass({
     },
 
     showRoom: function(room, room_alias) {
-        var payload = {action: 'view_room'};
+        var payload = { action: 'view_room' };
         if (room) {
             // Don't let the user view a room they won't be able to either
             // peek or join: fail earlier so they don't have to click back
             // to the directory.
             if (MatrixClientPeg.get().isGuest()) {
                 if (!room.world_readable && !room.guest_can_join) {
-                    dis.dispatch({action: 'view_set_mxid'});
+                    dis.dispatch({ action: 'view_set_mxid' });
                     return;
                 }
             }
@@ -397,49 +395,59 @@ module.exports = React.createClass({
             guestJoin = null;
 
             if (rooms[i].world_readable) {
-                guestRead = (
-                    <div className="mx_RoomDirectory_perm">{ _t('World readable') }</div>
+                guestRead = ( <
+                    div className = "mx_RoomDirectory_perm" > { _t('World readable') } < /div>
                 );
             }
             if (rooms[i].guest_can_join) {
-                guestJoin = (
-                    <div className="mx_RoomDirectory_perm">{ _t('Guests can join') }</div>
+                guestJoin = ( <
+                    div className = "mx_RoomDirectory_perm" > { _t('Guests can join') } < /div>
                 );
             }
 
             perms = null;
             if (guestRead || guestJoin) {
-                perms = <div className="mx_RoomDirectory_perms">{guestRead} {guestJoin}</div>;
+                perms = < div className = "mx_RoomDirectory_perms" > { guestRead } { guestJoin } < /div>;
             }
 
             var topic = rooms[i].topic || '';
             topic = linkifyString(sanitizeHtml(topic));
 
-            rows.push(
-                <tr key={ rooms[i].room_id }
-                    onClick={self.onRoomClicked.bind(self, rooms[i])}
-                    // cancel onMouseDown otherwise shift-clicking highlights text
-                    onMouseDown={(ev) => {ev.preventDefault();}}
-                >
-                    <td className="mx_RoomDirectory_roomAvatar">
-                        <BaseAvatar width={24} height={24} resizeMethod='crop'
-                            name={ name } idName={ name }
-                            url={ ContentRepo.getHttpUriForMxc(
-                                    MatrixClientPeg.get().getHomeserverUrl(),
-                                    rooms[i].avatar_url, 24, 24, "crop") } />
-                    </td>
-                    <td className="mx_RoomDirectory_roomDescription">
-                        <div className="mx_RoomDirectory_name">{ name }</div>&nbsp;
-                        { perms }
-                        <div className="mx_RoomDirectory_topic"
-                             onClick={ function(e) { e.stopPropagation() } }
-                             dangerouslySetInnerHTML={{ __html: topic }}/>
-                        <div className="mx_RoomDirectory_alias">{ get_display_alias_for_room(rooms[i]) }</div>
-                    </td>
-                    <td className="mx_RoomDirectory_roomMemberCount">
-                        { rooms[i].num_joined_members }
-                    </td>
-                </tr>
+            rows.push( <
+                tr key = { rooms[i].room_id }
+                onClick = { self.onRoomClicked.bind(self, rooms[i]) }
+                // cancel onMouseDown otherwise shift-clicking highlights text
+                onMouseDown = {
+                    (ev) => { ev.preventDefault(); } } >
+                <
+                td className = "mx_RoomDirectory_roomAvatar" >
+                <
+                BaseAvatar width = { 24 }
+                height = { 24 }
+                resizeMethod = 'crop'
+                name = { name }
+                idName = { name }
+                url = {
+                    ContentRepo.getHttpUriForMxc(
+                        MatrixClientPeg.get().getHomeserverUrl(),
+                        rooms[i].avatar_url, 24, 24, "crop")
+                }
+                /> <
+                /td> <
+                td className = "mx_RoomDirectory_roomDescription" >
+                <
+                div className = "mx_RoomDirectory_name" > { name } < /div>&nbsp; { perms } <
+                div className = "mx_RoomDirectory_topic"
+                onClick = {
+                    function(e) { e.stopPropagation() } }
+                dangerouslySetInnerHTML = {
+                    { __html: topic } }
+                /> <
+                div className = "mx_RoomDirectory_alias" > { get_display_alias_for_room(rooms[i]) } < /div> <
+                /td> <
+                td className = "mx_RoomDirectory_roomMemberCount" > { rooms[i].num_joined_members } <
+                /td> <
+                /tr>
             );
         }
         return rows;
@@ -490,19 +498,24 @@ module.exports = React.createClass({
         const Loader = sdk.getComponent("elements.Spinner");
 
         if (this.state.protocolsLoading) {
-            return (
-                <div className="mx_RoomDirectory">
-                    <SimpleRoomHeader title={ _t('Directory') } />
-                    <Loader />
-                </div>
+            return ( <
+                div className = "mx_RoomDirectory" >
+                <
+                SimpleRoomHeader title = { _t('Directory') }
+                /> <
+                Loader / >
+                <
+                /div>
             );
         }
 
         let content;
         if (this.state.loading) {
-            content = <div className="mx_RoomDirectory">
-                <Loader />
-            </div>;
+            content = < div className = "mx_RoomDirectory" >
+                <
+                Loader / >
+                <
+                /div>;
         } else {
             const rows = this.getRows();
             // we still show the scrollpanel, at least for now, because
@@ -510,24 +523,25 @@ module.exports = React.createClass({
             // request from the scrollpanel because there isn't one
             let scrollpanel_content;
             if (rows.length == 0) {
-                scrollpanel_content = <i>{ _t('No rooms to show') }</i>;
+                scrollpanel_content = < i > { _t('No rooms to show') } < /i>;
             } else {
-                scrollpanel_content = <table ref="directory_table" className="mx_RoomDirectory_table">
-                    <tbody>
-                        { this.getRows() }
-                    </tbody>
-                </table>;
+                scrollpanel_content = < table ref = "directory_table"
+                className = "mx_RoomDirectory_table" >
+                    <
+                    tbody > { this.getRows() } <
+                    /tbody> <
+                    /table>;
             }
             const ScrollPanel = sdk.getComponent("structures.ScrollPanel");
-            content = <ScrollPanel ref={this.collectScrollPanel}
-                className="mx_RoomDirectory_tableWrapper"
-                onFillRequest={ this.onFillRequest }
-                stickyBottom={false}
-                startAtBottom={false}
-                onResize={function(){}}
-            >
-                { scrollpanel_content }
-            </ScrollPanel>;
+            content = < ScrollPanel ref = { this.collectScrollPanel }
+            className = "mx_RoomDirectory_tableWrapper"
+            onFillRequest = { this.onFillRequest }
+            stickyBottom = { false }
+            startAtBottom = { false }
+            onResize = {
+                    function() {} } >
+                { scrollpanel_content } <
+                /ScrollPanel>;
         }
 
         const protocolName = protocolNameForInstanceId(this.protocols, this.state.instanceId);
@@ -561,21 +575,30 @@ module.exports = React.createClass({
 
         const NetworkDropdown = sdk.getComponent('directory.NetworkDropdown');
         const DirectorySearchBox = sdk.getComponent('elements.DirectorySearchBox');
-        return (
-            <div className="mx_RoomDirectory">
-                <SimpleRoomHeader title={ _t('Directory') } icon="img/icons-directory.svg" />
-                <div className="mx_RoomDirectory_list">
-                    <div className="mx_RoomDirectory_listheader">
-                        <DirectorySearchBox
-                            className="mx_RoomDirectory_searchbox"
-                            onChange={this.onFilterChange} onClear={this.onFilterClear} onJoinClick={this.onJoinClick}
-                            placeholder={placeholder} showJoinButton={showJoinButton}
-                        />
-                        <NetworkDropdown config={this.props.config} protocols={this.protocols} onOptionChange={this.onOptionChange} />
-                    </div>
-                    {content}
-                </div>
-            </div>
+        return ( <
+            div className = "mx_RoomDirectory" >
+            <
+            SimpleRoomHeader title = { _t('Directory') }
+            icon = "img/icons-directory.svg" / >
+            <
+            div className = "mx_RoomDirectory_list" >
+            <
+            div className = "mx_RoomDirectory_listheader" >
+            <
+            DirectorySearchBox className = "mx_RoomDirectory_searchbox"
+            onChange = { this.onFilterChange }
+            onClear = { this.onFilterClear }
+            onJoinClick = { this.onJoinClick }
+            placeholder = { placeholder }
+            showJoinButton = { showJoinButton }
+            /> <
+            NetworkDropdown config = { this.props.config }
+            protocols = { this.protocols }
+            onOptionChange = { this.onOptionChange }
+            /> <
+            /div> { content } <
+            /div> <
+            /div>
         );
     }
 });
@@ -583,5 +606,5 @@ module.exports = React.createClass({
 // Similar to matrix-react-sdk's MatrixTools.getDisplayAliasForRoom
 // but works with the objects we get from the public room list
 function get_display_alias_for_room(room) {
-    return  room.canonical_alias || (room.aliases ? room.aliases[0] : "");
+    return room.canonical_alias || (room.aliases ? room.aliases[0] : "");
 }

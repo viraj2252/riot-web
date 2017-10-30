@@ -19,7 +19,7 @@ limitations under the License.
 import Promise from 'bluebird';
 var Matrix = require("matrix-js-sdk");
 var Room = Matrix.Room;
-var CallHandler = require('matrix-react-sdk/lib/CallHandler');
+var CallHandler = require('matrix-react-sdk-vj/lib/CallHandler');
 
 // FIXME: This currently forces Vector to try to hit the matrix.org AS for conferencing.
 // This is bad because it prevents people running their own ASes from being used.
@@ -69,7 +69,7 @@ ConferenceCall.prototype._getConferenceUserRoom = function() {
     for (var i = 0; i < rooms.length; i++) {
         var confUser = rooms[i].getMember(this.confUserId);
         if (confUser && confUser.membership === "join" &&
-                rooms[i].getJoinedMembers().length === 2) {
+            rooms[i].getJoinedMembers().length === 2) {
             confRoom = rooms[i];
             break;
         }
